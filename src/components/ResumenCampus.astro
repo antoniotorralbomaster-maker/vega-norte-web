@@ -1,0 +1,78 @@
+---
+// Resumen de campus (bloque 15). Lee `campus` de datos/club.json.
+// La página de detalle de campus llega en la fase 2; entonces cada tarjeta enlazará a ella.
+import { club } from '../lib/datos';
+import { euros } from '../lib/formato';
+
+const campus = club.campus.map((c) => {
+  const importes = c.precios.map((p) => p.euros);
+  const min = Math.min(...importes);
+  const max = Math.max(...importes);
+  const precio = min === max ? euros(min) : `De ${euros(min)} a ${euros(max)}, según las semanas`;
+  return { ...c, precio };
+});
+---
+
+<ul class="campus">
+  {
+    campus.map((c) => (
+      <li class="campus__tarjeta">
+        <h3 class="campus__nombre">{c.nombre}</h3>
+        <dl class="campus__datos">
+          <dt>Fechas</dt>
+          <dd>{c.fechas}</dd>
+          <dt>Edades</dt>
+          <dd>{c.edades}</dd>
+          <dt>Horario</dt>
+          <dd>{c.horario}</dd>
+          <dt>Precio</dt>
+          <dd>{c.precio}</dd>
+        </dl>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .campus {
+    list-style: none;
+    margin: 1.5rem 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 720px) {
+    .campus {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .campus__tarjeta {
+    padding: 1.5rem;
+    border: 1px solid var(--vn-arena);
+    border-left: 6px solid var(--vn-rojo);
+    border-radius: 4px;
+  }
+
+  .campus__nombre {
+    font: var(--vn-h3);
+    letter-spacing: 0.01em;
+  }
+
+  .campus__datos {
+    margin: 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 1rem;
+  }
+
+  .campus__datos dt {
+    font-weight: 600;
+  }
+
+  .campus__datos dd {
+    margin: 0;
+  }
+</style>

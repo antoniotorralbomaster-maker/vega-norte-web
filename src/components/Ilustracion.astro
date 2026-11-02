@@ -3,7 +3,7 @@
 // Sustituyen a las fotos mientras no haya imágenes propias. Son decorativas
 // (aria-hidden): el texto que acompañan ya dice lo que hace falta.
 interface Props {
-  motivo?: 'campo' | 'conos' | 'balon';
+  motivo?: 'campo' | 'conos' | 'balon' | 'mapa';
   class?: string;
 }
 
@@ -69,6 +69,23 @@ const { motivo = 'campo', class: clase } = Astro.props;
       </g>
     )
   }
+  {
+    motivo === 'mapa' && (
+      <g>
+        <g class="i-calle">
+          <line x1="0" y1="80" x2="400" y2="60" />
+          <line x1="0" y1="190" x2="400" y2="170" />
+          <line x1="110" y1="0" x2="130" y2="240" />
+          <line x1="300" y1="0" x2="280" y2="240" />
+        </g>
+        <rect class="i-granate" x="150" y="92" width="110" height="64" rx="4" />
+        <rect class="i-blanco" x="160" y="102" width="40" height="44" rx="2" />
+        <rect class="i-blanco" x="210" y="102" width="40" height="44" rx="2" />
+        <path class="i-rojo" d="M205 112 C190 112 182 100 182 88 C182 74 192 64 205 64 C218 64 228 74 228 88 C228 100 220 112 205 112 Z M205 128 L193 106 L217 106 Z" />
+        <circle class="i-blanco" cx="205" cy="88" r="8" />
+      </g>
+    )
+  }
 </svg>
 
 <style>
@@ -109,6 +126,11 @@ const { motivo = 'campo', class: clase } = Astro.props;
   .i-borde {
     stroke: var(--vn-carbon);
     stroke-width: 3;
+  }
+
+  .i-calle {
+    stroke: var(--vn-blanco);
+    stroke-width: 14;
   }
 
   .i-trazo {

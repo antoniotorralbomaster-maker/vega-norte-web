@@ -7,21 +7,20 @@ import { fecha, fechaIso } from '../lib/formato';
 
 interface Props {
   publico?: Publico;
-  /** Texto que sigue a la fecha de actualización */
-  nota?: string;
+  /** Pie de la tabla; «[fecha]» se sustituye por la fecha de actualización */
+  pie?: string;
 }
 
-const { publico, nota } = Astro.props;
+const { publico, pie = 'Datos actualizados el [fecha].' } = Astro.props;
+const [antes, despues = ''] = pie.split('[fecha]');
 const { actualizado, items } = club.plazas_ejemplo;
 const permitidas = publico ? new Set(nombresDe(publico)) : null;
 const filas = permitidas ? items.filter((i) => permitidas.has(i.categoria)) : items;
 ---
 
+<figure class="tabla-figura">
 <div class="tabla-marco" role="region" aria-label="Plazas disponibles" tabindex="0">
-  <table class="tabla">
-    <caption>
-      Datos actualizados el <time datetime={fechaIso(actualizado)}>{fecha(actualizado)}</time>.{nota && ` ${nota}`}
-    </caption>
+  <table class="tabla tabla--compacta">
     <thead>
       <tr>
         <th scope="col">Categoría</th>
@@ -44,3 +43,7 @@ const filas = permitidas ? items.filter((i) => permitidas.has(i.categoria)) : it
     </tbody>
   </table>
 </div>
+  <figcaption>
+    {antes}{pie.includes('[fecha]') && <time datetime={fechaIso(actualizado)}>{fecha(actualizado)}</time>}{despues}
+  </figcaption>
+</figure>

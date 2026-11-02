@@ -62,20 +62,7 @@ const RUTAS_MVP = [
 // Rutas que se construyen en bloques posteriores. Cada bloque las va quitando de
 // esta lista; al terminar el MVP debe quedar vacía y cualquier ruta ausente será error.
 const RUTAS_PENDIENTES = new Set([
-  '/club/quienes-somos',
-  '/club/valores',
-  '/club/proteccion-de-menores',
-  '/equipos',
-  '/ven-a-jugar/familias',
-  '/ven-a-jugar/jugadores',
-  '/ven-a-jugar/cuotas',
-  '/ven-a-jugar/preguntas-frecuentes',
-  '/cuerpo-tecnico/unete',
-  '/noticias',
-  '/contacto',
-  '/legal/privacidad',
-  '/legal/cookies',
-  '/legal/aviso-legal',
+  '/noticias', // bloque de noticias
 ]);
 
 const NOTICIAS_PENDIENTES = true; // bloque 4
@@ -211,7 +198,34 @@ for (const p of paginasHtml) {
 }
 
 // ---------------------------------------------------------------------------
-// 7. Nunca subir un .env real
+// 7. Ninguna indicación interna llega a la web publicada
+// ---------------------------------------------------------------------------
+const INTERNAS = [/datos\/club\.json/, /formularios\.json/, /Nota interna/i, /Se genera/, /\(Fase 2\)/, /\(bloque \d+\)/, /`/];
+for (const p of paginasHtml) {
+  const texto = textoPlano(readFileSync(p, 'utf8').replace(/<(script|style)\b[\s\S]*?<\/\1>/g, ''));
+  for (const patron of INTERNAS) {
+    const m = texto.match(patron);
+    if (m) error('notas', `${rel(p)}: se ha publicado una indicación interna («…${texto.slice(Math.max(0, m.index - 30), m.index + 40)}…»)`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 8. Correos, teléfonos y NIF escritos en los textos coinciden con datos/club.json
+// ---------------------------------------------------------------------------
+const fichaTexto = readFileSync(join(RAIZ, 'datos/club.json'), 'utf8');
+for (const md of ficheros(join(RAIZ, 'contenido/paginas'), ['.md'])) {
+  const texto = readFileSync(md, 'utf8');
+  const datos = [
+    ...texto.matchAll(/[\w.-]+@[\w-]+\.[\w.]+/g),
+    ...texto.matchAll(/\+34(?:\s?\d){9}/g),
+    ...texto.matchAll(/\b[A-Z]-\d{8}\b/g),
+  ].map((m) => m[0].replace(/\.$/, ''));
+  for (const d of new Set(datos))
+    if (!fichaTexto.includes(d)) error('datos', `${rel(md)}: «${d}» no coincide con ningún dato de datos/club.json`);
+}
+
+// ---------------------------------------------------------------------------
+// 9. Nunca subir un .env real
 // ---------------------------------------------------------------------------
 try {
   const seguidos = execSync('git ls-files', { cwd: RAIZ, encoding: 'utf8' }).split('\n');

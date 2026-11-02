@@ -14,9 +14,9 @@ const { inscripcion, numero_pagos, temporada } = club.cuotas;
 const filas = filasCuotas();
 ---
 
+<figure class="tabla-figura">
 <div class="tabla-marco" role="region" aria-label={`Cuotas de la temporada ${temporada}`} tabindex="0">
   <table class="tabla">
-    {nota && <caption>{nota}</caption>}
     <thead>
       <tr>
         <th scope="col">Categoría</th>
@@ -41,3 +41,5 @@ const filas = filasCuotas();
     </tbody>
   </table>
 </div>
+  {nota && <figcaption>{nota}</figcaption>}
+</figure>

@@ -1,0 +1,59 @@
+---
+// Cuatro valores (bloque 8). Nombre y significado de `club.valores` (datos/club.json);
+// la frase «Se nota en…» de cada uno viene del texto de valores.md.
+import { club } from '../lib/datos';
+
+interface Props {
+  seNota?: Record<string, string>;
+}
+
+const { seNota = {} } = Astro.props;
+---
+
+<ul class="valores">
+  {
+    club.club.valores.map((v) => (
+      <li class="valores__tarjeta sobre-arena">
+        <h3 class="valores__nombre">{v.nombre}</h3>
+        <p class="valores__significado">{v.significado}.</p>
+        {seNota[v.nombre] && <p class="valores__nota">{seNota[v.nombre]}</p>}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .valores {
+    list-style: none;
+    margin: 1.5rem 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 720px) {
+    .valores {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .valores__tarjeta {
+    padding: 1.5rem;
+    border-radius: var(--vn-radio-foto);
+    border-top: 6px solid var(--vn-rojo);
+  }
+
+  .valores__nombre {
+    font: var(--vn-h3);
+    letter-spacing: 0.01em;
+  }
+
+  .valores__significado {
+    font-weight: 600;
+  }
+
+  .valores__nota {
+    margin: 0;
+  }
+</style>

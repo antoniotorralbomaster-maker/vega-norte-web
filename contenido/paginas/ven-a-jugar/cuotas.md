@@ -33,7 +33,7 @@ Tabla desde `categorias`: categoría, edad, cuota anual, inscripción y tres pag
 - Entrenamientos de lunes a jueves
 - Seguimiento de la evolución del jugador
 
-## Lo que no incluye: el pack de equipación
+## No incluye: el pack de equipación
 
 Pack de 190 €: dos equipaciones de juego, chándal y mochila.
 

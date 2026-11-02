@@ -235,13 +235,21 @@ a:hover {
   line-height: 24px;
 }
 
-.tabla caption {
-  caption-side: bottom;
-  text-align: left;
+.tabla-figura {
+  margin: 1.5rem 0;
+}
+
+.tabla-figura > .tabla-marco {
+  margin: 0;
+}
+
+.tabla-figura figcaption {
   padding-top: 0.75rem;
   font: var(--vn-texto-pequeno);
   color: var(--vn-gris);
 }
+
+
 
 .tabla th,
 .tabla td {
@@ -331,5 +339,57 @@ a:hover {
 @media (min-width: 1024px) {
   .rejilla-3 {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tabla--estrecha {
+  min-width: 0;
+  max-width: 40rem;
+}
+
+/* ---------- Texto largo de las páginas de contenido ---------- */
+.prosa > :where(p, ul, ol, h2, h3, aside, .formulario-pendiente),
+.prosa > :where(div:not(.tabla-marco)) {
+  max-width: 46rem;
+}
+
+.prosa h2 {
+  margin-top: 2.5rem;
+}
+
+.prosa > h2:first-child {
+  margin-top: 0;
+}
+
+.prosa li {
+  margin-bottom: 0.5rem;
+}
+
+.prosa li::marker {
+  color: var(--vn-rojo);
+}
+
+.prosa strong {
+  font-weight: 600;
+}
+
+/* Tablas de pocas columnas: se ajustan al ancho sin desplazamiento */
+.tabla.tabla--compacta {
+  min-width: 0;
+}
+
+.tabla.tabla--compacta thead th {
+  white-space: normal;
+}
+
+@media (max-width: 599px) {
+  .tabla th,
+  .tabla td {
+    padding: 0.625rem 0.5rem;
+  }
+
+  /* En móvil, las tablas compactas usan el texto pequeño de la escala (14/20) */
+  .tabla.tabla--compacta {
+    font: var(--vn-texto-pequeno);
   }
 }

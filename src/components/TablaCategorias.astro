@@ -15,9 +15,9 @@ const categorias = club.categorias;
 const total = categorias.reduce((s, c) => s + c.equipos, 0);
 ---
 
+<figure class="tabla-figura">
 <div class="tabla-marco" role="region" aria-label="Categorías y equipos" tabindex="0">
   <table class="tabla">
-    {nota && <caption>{nota}</caption>}
     <thead>
       <tr>
         <th scope="col">Categoría</th>
@@ -53,3 +53,5 @@ const total = categorias.reduce((s, c) => s + c.equipos, 0);
     </tfoot>
   </table>
 </div>
+  {nota && <figcaption>{nota}</figcaption>}
+</figure>

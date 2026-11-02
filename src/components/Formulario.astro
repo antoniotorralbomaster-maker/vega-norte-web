@@ -1,0 +1,32 @@
+---
+// MARCADOR DE POSICIÓN del formulario genérico. Se construye en el bloque 5 a
+// partir de datos/formularios.json (validación, modo demostración y envío a n8n).
+import { formularios } from '../lib/datos';
+
+interface Props {
+  id: string;
+  ayuda?: string;
+}
+
+const { id, ayuda } = Astro.props;
+const form = formularios.formularios.find((f) => f.id === id);
+if (!form) throw new Error(`El formulario «${id}» no existe en datos/formularios.json`);
+---
+
+<div class="formulario-pendiente" data-formulario={id}>
+  {ayuda && <p>{ayuda}</p>}
+  <p class="texto-pequeno">Formulario en preparación.</p>
+</div>
+
+<style>
+  .formulario-pendiente {
+    padding: 1.25rem 1.5rem;
+    border: 1px dashed var(--vn-gris);
+    border-radius: 4px;
+  }
+
+  .formulario-pendiente p:last-child {
+    margin: 0;
+    color: var(--vn-gris);
+  }
+</style>

@@ -1,0 +1,27 @@
+---
+// Botón de descarga de un documento (p. ej. el protocolo de protección).
+// Solo se muestra cuando el fichero existe en public/documentos/: así nunca
+// enlazamos a un PDF que todavía no se ha generado.
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { url } from '../lib/url';
+
+interface Props {
+  texto: string;
+  /** Nombre del fichero dentro de public/documentos/ */
+  fichero: string;
+}
+
+const { texto, fichero } = Astro.props;
+const existe = existsSync(join(process.cwd(), 'public', 'documentos', fichero));
+---
+
+{
+  existe && (
+    <p>
+      <a class="boton" href={url(`/documentos/${fichero}`)} download>
+        {texto}
+      </a>
+    </p>
+  )
+}
