@@ -108,7 +108,7 @@ const INDICACIONES: {
 ];
 
 const DESCARTAR = [/^\(Nota interna/, /^Esta página es evergreen/, /^-{3,}$/];
-const SOSPECHOSO = /`datos\/|datos\/club\.json|formularios\.json|Se genera|leídas? de `/;
+const SOSPECHOSO = /`datos\/|`contenido\/|datos\/club\.json|formularios\.json|Se genera|leídas? de `/;
 
 /** Markdown → HTML, con enlaces internos respetando BASE_PATH y tablas con el estilo del club. */
 export function aHtml(md: string): string {

@@ -61,11 +61,9 @@ const RUTAS_MVP = [
 
 // Rutas que se construyen en bloques posteriores. Cada bloque las va quitando de
 // esta lista; al terminar el MVP debe quedar vacía y cualquier ruta ausente será error.
-const RUTAS_PENDIENTES = new Set([
-  '/noticias', // bloque de noticias
-]);
+const RUTAS_PENDIENTES = new Set([]);
 
-const NOTICIAS_PENDIENTES = true; // bloque 4
+const NOTICIAS_PENDIENTES = false;
 
 if (!existsSync(DIST)) {
   console.error('No existe dist/. Ejecuta antes «npm run build» o usa «npm run check».');

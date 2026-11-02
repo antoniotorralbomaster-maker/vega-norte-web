@@ -1,6 +1,6 @@
 ---
 // Tarjeta de noticia para portada y listado: ilustración, categoría, fecha y titular.
-import Ilustracion from './Ilustracion.astro';
+import ImagenNoticia from './ImagenNoticia.astro';
 import PastillaCategoria from './PastillaCategoria.astro';
 import { rutaNoticia, etiquetaNoticia, TIPOS, type Noticia } from '../lib/noticias';
 import { fecha, fechaIso } from '../lib/formato';
@@ -17,7 +17,7 @@ const Titulo = `h${nivel}` as 'h2' | 'h3';
 ---
 
 <article class="noticia" data-tipo={tipo}>
-  <Ilustracion motivo={TIPOS[tipo].motivo} />
+  <ImagenNoticia noticia={noticia} decorativa ancho={640} />
   <div class="noticia__cuerpo">
     <p class="noticia__meta">
       <PastillaCategoria texto={etiquetaNoticia(noticia)} />
@@ -42,7 +42,8 @@ const Titulo = `h${nivel}` as 'h2' | 'h3';
     overflow: hidden;
   }
 
-  .noticia :global(.ilustracion) {
+  .noticia :global(.ilustracion),
+  .noticia :global(.imagen-noticia) {
     border-radius: 0;
   }
 

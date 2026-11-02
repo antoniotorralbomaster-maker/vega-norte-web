@@ -1,0 +1,187 @@
+---
+// Página de noticia (bloque 21). Una por cada fichero de contenido/noticias.
+// Un fichero nuevo (p. ej. creado por n8n) basta para publicarla al reconstruir.
+import Base from '../../layouts/Base.astro';
+import ImagenNoticia from '../../components/ImagenNoticia.astro';
+import PastillaCategoria from '../../components/PastillaCategoria.astro';
+import { noticiasOrdenadas, rutaNoticia, etiquetaNoticia, TIPOS, type Noticia } from '../../lib/noticias';
+import { aHtml } from '../../lib/contenido';
+import { fecha, fechaIso } from '../../lib/formato';
+import { club } from '../../lib/datos';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const noticias = await noticiasOrdenadas();
+  return noticias.map((noticia, i) => ({
+    params: { slug: noticia.id },
+    props: { noticia, anterior: noticias[i + 1], siguiente: noticias[i - 1] },
+  }));
+}
+
+interface Props {
+  noticia: Noticia;
+  /** Más antigua */
+  anterior?: Noticia;
+  /** Más reciente */
+  siguiente?: Noticia;
+}
+
+const { noticia, anterior, siguiente } = Astro.props;
+const d = noticia.data;
+const campo = typeof d.campo === 'string' ? d.campo : undefined;
+
+// Los hashtags del final son para redes sociales: se muestran aparte, en pequeño.
+const parrafos = (noticia.body ?? '').trim().split(/\n\s*\n/);
+const ultimo = parrafos.at(-1)?.trim() ?? '';
+const soloHashtags = /^(#[\p{L}\p{N}_]+\s*)+$/u.test(ultimo);
+const hashtags = soloHashtags ? ultimo.split(/\s+/) : [];
+const cuerpo = aHtml((soloHashtags ? parrafos.slice(0, -1) : parrafos).join('\n\n'));
+
+const resumen = parrafos[0]?.replace(/[*_[\]]|\(\/[^)]*\)/g, '').slice(0, 155);
+const textoResultado = { victoria: 'Victoria', empate: 'Empate', derrota: 'Derrota' } as const;
+---
+
+<Base titulo={d.titulo} descripcion={resumen}>
+  <article class="articulo">
+    <header class="contenedor articulo__cabecera">
+      <p class="articulo__meta">
+        <PastillaCategoria texto={etiquetaNoticia(noticia)} />
+        <span>{TIPOS[d.tipo].singular}</span>
+        <span aria-hidden="true">·</span>
+        <time datetime={fechaIso(d.fecha)}>{fecha(d.fecha)}</time>
+      </p>
+      <h1>{d.titulo}</h1>
+    </header>
+
+    <div class="contenedor articulo__imagen">
+      <ImagenNoticia noticia={noticia} />
+    </div>
+
+    <div class="contenedor articulo__cuerpo prosa">
+      {
+        d.tipo === 'cronica' && d.rival && d.marcador && (
+          <aside class="marcador" aria-label="Resultado del partido">
+            <p class="marcador__equipos">
+              <span>{d.equipo ?? club.club.nombre_corto}</span>
+              <span class={`marcador__resultado marcador__resultado--${d.resultado ?? 'neutro'}`}>{d.marcador}</span>
+              <span>{d.rival}</span>
+            </p>
+            <p class="marcador__detalle texto-pequeno">
+              {d.resultado && textoResultado[d.resultado]}
+              {d.resultado && campo && ' · '}
+              {campo}
+            </p>
+          </aside>
+        )
+      }
+
+      <Fragment set:html={cuerpo} />
+
+      {hashtags.length > 0 && <p class="articulo__hashtags texto-pequeno">{hashtags.join(' ')}</p>}
+    </div>
+
+    <nav class="contenedor articulo__nav" aria-label="Más noticias">
+      <a href={url('/noticias')}>Todas las noticias</a>
+      <span class="articulo__vecinas">
+        {siguiente && <a href={url(rutaNoticia(siguiente))}>Más reciente: {siguiente.data.titulo}</a>}
+        {anterior && <a href={url(rutaNoticia(anterior))}>Anterior: {anterior.data.titulo}</a>}
+      </span>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .articulo__cabecera {
+    padding-top: 2.5rem;
+    max-width: calc(46rem + 32px);
+    margin-inline: 0;
+  }
+
+  .articulo__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.625rem;
+    margin: 0 0 1rem;
+    font: var(--vn-texto-pequeno);
+    color: var(--vn-gris);
+  }
+
+  .articulo__imagen {
+    max-width: calc(46rem + 32px);
+    margin-inline: 0;
+    margin-block: 0.5rem 2rem;
+  }
+
+  /* Centrado del bloque de lectura sobre el contenedor general */
+  .articulo__cabecera,
+  .articulo__imagen,
+  .articulo__cuerpo,
+  .articulo__nav {
+    margin-inline: auto;
+    max-width: calc(46rem + 32px);
+  }
+
+  .articulo__cuerpo {
+    padding-bottom: 1rem;
+  }
+
+  .articulo__hashtags {
+    color: var(--vn-gris);
+  }
+
+  .marcador {
+    margin: 0 0 2rem;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--vn-arena);
+    border-top: 4px solid var(--vn-granate);
+    border-radius: 4px;
+  }
+
+  .marcador__equipos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1rem;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  /* Colores de resultado: solo en marcadores, como texto de 24 px o más */
+  .marcador__resultado {
+    font: var(--vn-h2);
+    letter-spacing: 0.01em;
+    color: var(--vn-carbon);
+  }
+
+  .marcador__resultado--victoria {
+    color: var(--vn-victoria);
+  }
+
+  .marcador__resultado--empate {
+    color: var(--vn-empate);
+  }
+
+  .marcador__resultado--derrota {
+    color: var(--vn-derrota);
+  }
+
+  .marcador__detalle {
+    margin: 0.25rem 0 0;
+    color: var(--vn-gris);
+  }
+
+  .articulo__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-block: 1.5rem 3.5rem;
+    border-top: 1px solid var(--vn-arena);
+  }
+
+  .articulo__vecinas {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+</style>

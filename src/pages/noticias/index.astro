@@ -1,0 +1,144 @@
+---
+// Listado de noticias (bloque 20), de la más reciente a la más antigua.
+// Filtros por tipo: sin JavaScript se ven todas; con JavaScript, los botones
+// filtran sin recargar y la elección queda en la dirección (?tipo=cronica).
+import { getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import TarjetaNoticia from '../../components/TarjetaNoticia.astro';
+import { noticiasOrdenadas, TIPOS } from '../../lib/noticias';
+
+const pagina = await getEntry('paginas', 'noticias');
+if (!pagina) throw new Error('Falta contenido/paginas/noticias.md');
+// De noticias.md solo se publica el titular: el resto son indicaciones del listado.
+const titular = pagina.body?.match(/^# (.+)$/m)?.[1].trim();
+if (!titular) throw new Error('contenido/paginas/noticias.md: falta el titular «# …»');
+const noticias = await noticiasOrdenadas();
+const tipos = Object.entries(TIPOS) as [keyof typeof TIPOS, (typeof TIPOS)[keyof typeof TIPOS]][];
+const cuenta = (t: string) => noticias.filter((n) => n.data.tipo === t).length;
+---
+
+<Base titulo={pagina.data.titulo} descripcion={pagina.data.descripcion}>
+  <header class="pagina__cabecera sobre-arena">
+    <div class="contenedor">
+      <h1>{titular}</h1>
+    </div>
+  </header>
+
+  <div class="contenedor listado">
+    <div class="filtros" role="group" aria-label="Filtrar noticias por tipo" hidden>
+      <button class="filtros__boton" type="button" data-tipo="" aria-pressed="true">
+        Todas <span class="filtros__cuenta">({noticias.length})</span>
+      </button>
+      {
+        tipos.map(([id, t]) => (
+          <button class="filtros__boton" type="button" data-tipo={id} aria-pressed="false">
+            {t.plural} <span class="filtros__cuenta">({cuenta(id)})</span>
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="listado__estado solo-lectores" aria-live="polite"></p>
+
+    <ul class="rejilla-3 listado__lista">
+      {
+        noticias.map((n) => (
+          <li data-tipo={n.data.tipo}>
+            <TarjetaNoticia noticia={n} nivel={2} />
+          </li>
+        ))
+      }
+    </ul>
+    <p class="listado__vacio" hidden>Todavía no hemos publicado noticias de este tipo.</p>
+  </div>
+</Base>
+
+<script>
+  const grupo = document.querySelector<HTMLElement>('.filtros');
+  const botones = [...document.querySelectorAll<HTMLButtonElement>('.filtros__boton')];
+  const items = [...document.querySelectorAll<HTMLElement>('.listado__lista > li')];
+  const vacio = document.querySelector<HTMLElement>('.listado__vacio');
+  const estado = document.querySelector<HTMLElement>('.listado__estado');
+
+  function aplicar(tipo: string, anunciar = true) {
+    let visibles = 0;
+    for (const li of items) {
+      const ver = !tipo || li.dataset.tipo === tipo;
+      li.hidden = !ver;
+      if (ver) visibles++;
+    }
+    for (const b of botones) b.setAttribute('aria-pressed', String(b.dataset.tipo === tipo));
+    if (vacio) vacio.hidden = visibles > 0;
+    if (estado && anunciar) estado.textContent = `${visibles} ${visibles === 1 ? 'noticia' : 'noticias'}`;
+  }
+
+  if (grupo) {
+    grupo.hidden = false;
+    const validos = new Set(botones.map((b) => b.dataset.tipo));
+    const inicial = new URLSearchParams(location.search).get('tipo') ?? '';
+    aplicar(validos.has(inicial) ? inicial : '', false);
+    for (const b of botones) {
+      b.addEventListener('click', () => {
+        const tipo = b.dataset.tipo ?? '';
+        aplicar(tipo);
+        const url = new URL(location.href);
+        if (tipo) url.searchParams.set('tipo', tipo);
+        else url.searchParams.delete('tipo');
+        history.replaceState(null, '', url);
+      });
+    }
+  }
+</script>
+
+<style>
+  .pagina__cabecera {
+    padding-block: 2.5rem 2rem;
+    border-bottom: 4px solid var(--vn-rojo);
+  }
+
+  .pagina__cabecera h1 {
+    margin: 0;
+  }
+
+  .listado {
+    padding-block: 2rem 3.5rem;
+  }
+
+  .filtros:not([hidden]) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .filtros__boton {
+    font-family: var(--vn-fuente-texto);
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+    padding: 0.375rem 1rem;
+    border: 2px solid var(--vn-granate);
+    border-radius: 999px;
+    background: var(--vn-blanco);
+    color: var(--vn-granate);
+    cursor: pointer;
+  }
+
+  .filtros__boton:hover {
+    background: var(--vn-arena);
+  }
+
+  .filtros__boton[aria-pressed='true'] {
+    background: var(--vn-granate);
+    color: var(--vn-blanco);
+  }
+
+  .filtros__cuenta {
+    font-weight: 400;
+  }
+
+  .listado__vacio {
+    margin-top: 1rem;
+    color: var(--vn-gris);
+  }
+</style>

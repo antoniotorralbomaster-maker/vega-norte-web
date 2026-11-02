@@ -72,7 +72,9 @@ Las rutas que aún no se han construido aparecen como avisos. Cuando se construy
 
 - **Datos** (plazas, cuotas, fechas de pruebas, campus): edita `datos/club.json` y reconstruye.
 - **Páginas**: edita el `.md` en `contenido/paginas/`. Una página nueva con cabecera y `slug` se publica sola.
-- **Noticias**: añade un fichero en `contenido/noticias/` con la cabecera del esquema y reconstruye.
+- **Noticias**: añade un fichero `contenido/noticias/AAAA-MM-DD-slug.md` con la cabecera del esquema y reconstruye. Se publica en `/noticias/AAAA-MM-DD-slug`, aparece en el listado y, si es de las tres más recientes, en la portada. Si la cabecera no cumple el esquema (por ejemplo, un `tipo` desconocido), la construcción falla y dice por qué.
+- **Imagen de una noticia**: guárdala en `src/assets/noticias/` con el mismo nombre que la noticia (`.jpg`, `.png` o `.webp`). Sin imagen, se muestra una ilustración según el tipo.
+- **Noticias de ejemplo**: las que llevan `ejemplo: true` se publican mientras `MOSTRAR_NOTICIAS_EJEMPLO` sea `true` en `src/lib/config.ts`.
 - **Protocolo de protección**: copia `public/documentos/protocolo-proteccion.pdf`; el botón «Descargar el protocolo» aparece solo cuando el fichero existe.
 - **Escudo**: copia `vega-norte-escudo-color.svg` (y opcionalmente `-blanco.svg`) en `src/assets/escudo/`.
 - **Fase 2**: cambia `fase: 2` por `fase: 1` en `src/lib/menu.ts` cuando exista la página.
