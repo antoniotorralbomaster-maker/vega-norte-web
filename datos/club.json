@@ -1,0 +1,167 @@
+{
+  "_nota": "Datos 100% ficticios para el caso de estudio del TFM (Máster en IA Generativa, EBIS). Única fuente de verdad de la web: las páginas leen de aquí. Propuesta validada por Antonio Torralbo el 02-11-2026.",
+  "club": {
+    "nombre": "AD Vega Norte",
+    "nombre_corto": "Vega Norte",
+    "lema": "Crecemos juntos, jugamos juntos",
+    "hashtags": ["#CrecemosJuntos", "#ADVegaNorte"],
+    "fundacion": 2008,
+    "ambito": "Fútbol base de la zona norte de Madrid, de prebenjamín a juvenil",
+    "proposito": "Formar futbolistas y personas, con un sitio para cada nivel",
+    "posicionamiento": "Cantera competitiva con trato de familia",
+    "equipos": 45,
+    "jugadores_aprox": 700,
+    "valores": [
+      { "nombre": "Pertenencia", "significado": "Cada jugador y cada familia son parte del club" },
+      { "nombre": "Esfuerzo", "significado": "El trabajo diario vale tanto como el resultado" },
+      { "nombre": "Aprendizaje", "significado": "Ganar y perder forman parte de crecer" },
+      { "nombre": "Respeto", "significado": "Rival, árbitro y compañeros merecen el mismo trato" }
+    ],
+    "patrocinador_principal": "NORTESOL · Energía solar"
+  },
+  "contacto": {
+    "direccion": "Ciudad Deportiva Vega Norte, Camino de la Vega s/n, 28108, zona norte de Madrid",
+    "telefono": "+34 91 555 01 42",
+    "emails": {
+      "general": "info@vega-norte.es",
+      "entrenadores": "entrenadores@vega-norte.es",
+      "proteccion": "proteccion@vega-norte.es",
+      "secretaria": "secretaria@vega-norte.es"
+    },
+    "horario_secretaria": "Lunes a jueves, de 17:00 a 20:30",
+    "horario_entrenamientos": "Lunes a jueves, entre las 17:30 y las 20:30; partidos los fines de semana",
+    "redes": { "instagram": "@vega_norte_ad", "x": "@vega_norte_ad" }
+  },
+  "instalaciones": {
+    "nombre": "Ciudad Deportiva Vega Norte",
+    "descripcion": "3 campos de fútbol 11 y 2 de fútbol 7, todos de césped artificial, con vestuarios, sala de reuniones y cantina",
+    "campos_f11": 3,
+    "campos_f7": 2
+  },
+  "directiva": [
+    { "cargo": "Presidenta", "nombre": "Marta Olmedo Sanz" },
+    { "cargo": "Director deportivo", "nombre": "Álvaro Berrocal Díez" },
+    { "cargo": "Coordinador de fútbol 7", "nombre": "Iván Cortés Lara" },
+    { "cargo": "Coordinadora de fútbol 11", "nombre": "Lucía Arranz Vidal" },
+    { "cargo": "Delegada de Protección y Bienestar", "nombre": "Elena Quintana Prieto" },
+    { "cargo": "Secretaría y cuotas", "nombre": "Pablo Heras Montes" }
+  ],
+  "categorias": [
+    { "id": "primeros-pasos", "nombre": "Primeros pasos", "edad": "5 años", "nacidos": "2021", "equipos": 3, "formato": "Fútbol 7 reducido", "cuota_anual": 250, "pagos": 50 },
+    { "id": "prebenjamin", "nombre": "Prebenjamín", "edad": "6-7 años", "nacidos": "2019-2020", "equipos": 6, "formato": "Fútbol 7", "cuota_anual": 340, "pagos": 80 },
+    { "id": "benjamin", "nombre": "Benjamín", "edad": "8-9 años", "nacidos": "2017-2018", "equipos": 7, "formato": "Fútbol 7", "cuota_anual": 340, "pagos": 80 },
+    { "id": "alevin", "nombre": "Alevín", "edad": "10-11 años", "nacidos": "2015-2016", "equipos": 8, "formato": "Fútbol 7 y fútbol 11", "cuota_anual": 370, "pagos": 90 },
+    { "id": "infantil", "nombre": "Infantil", "edad": "12-13 años", "nacidos": "2013-2014", "equipos": 7, "formato": "Fútbol 11", "cuota_anual": 400, "pagos": 100 },
+    { "id": "cadete", "nombre": "Cadete", "edad": "14-15 años", "nacidos": "2011-2012", "equipos": 7, "formato": "Fútbol 11", "cuota_anual": 400, "pagos": 100 },
+    { "id": "juvenil", "nombre": "Juvenil", "edad": "16-18 años", "nacidos": "2008-2010", "equipos": 7, "formato": "Fútbol 11", "cuota_anual": 430, "pagos": 110 }
+  ],
+  "_nota_categorias": "Años de nacimiento orientativos para 2026/27, no verificados con la RFFM. Total de equipos: 3+6+7+8+7+7+7 = 45.",
+  "cuotas": {
+    "temporada": "2026/27",
+    "inscripcion": 100,
+    "numero_pagos": 3,
+    "calendario_pagos": ["Antes del 30 de junio: inscripción", "Antes del 15 de octubre: primer pago", "Antes del 15 de noviembre: segundo pago", "Antes del 15 de diciembre: tercer pago"],
+    "incluye": ["Ficha federativa", "Seguro deportivo", "Reconocimiento médico", "Entrenadores con titulación", "Entrenamientos de lunes a jueves", "Seguimiento de la evolución del jugador"],
+    "no_incluye": ["Pack de equipación"],
+    "equipacion": { "pack_euros": 190, "contenido": "Dos equipaciones de juego, chándal y mochila" },
+    "descuento_hermanos_pct": 10,
+    "forma_pago": "Transferencia o domiciliación; se indica el nombre del jugador y el año de nacimiento"
+  },
+  "campus": [
+    {
+      "id": "verano-2027",
+      "nombre": "Campus de verano 2027",
+      "fechas": "Del 21 de junio al 23 de julio de 2027",
+      "edades": "5 a 14 años",
+      "horario": "De 9:30 a 14:00",
+      "precios": [
+        { "semanas": 1, "euros": 110 },
+        { "semanas": 2, "euros": 180 },
+        { "semanas": 3, "euros": 250 },
+        { "semanas": 4, "euros": 315 },
+        { "semanas": 5, "euros": 375 }
+      ],
+      "comedor_semana": 60,
+      "guarderia": "Gratuita, de 8:00 a 9:30",
+      "descuento_hermanos_pct": 10,
+      "incluye": ["Dos camisetas", "Mochila", "Entrenadores con titulación", "Actividades de agua y juegos"],
+      "plazas": "Limitadas; se asignan por orden de inscripción"
+    },
+    {
+      "id": "semana-santa-2027",
+      "nombre": "Campus de Semana Santa 2027",
+      "fechas": "Del 22 al 26 de marzo de 2027",
+      "edades": "5 a 14 años",
+      "horario": "De 9:30 a 14:00",
+      "precios": [{ "semanas": 1, "euros": 95 }],
+      "guarderia": "Gratuita, de 8:00 a 9:30",
+      "plazas": "Limitadas; se asignan por orden de inscripción"
+    }
+  ],
+  "_nota_campus": "Fechas y calendario escolar ficticios; no verificados con el calendario real.",
+  "pruebas": {
+    "temporada": "2027/28",
+    "fechas": ["8 de mayo de 2027", "15 de mayo de 2027", "22 de mayo de 2027", "29 de mayo de 2027", "5 de junio de 2027"],
+    "dia": "Sábados por la mañana",
+    "lugar": "Ciudad Deportiva Vega Norte",
+    "documentacion": [
+      "Autorización firmada del tutor legal",
+      "Si el jugador está federado en otro club: autorización de su club de origen o declaración responsable del tutor",
+      "Ropa deportiva y botas"
+    ],
+    "aviso": "Hacer la prueba no asegura plaza. Contactamos con todas las familias, hayan sido seleccionadas o no."
+  },
+  "plazas_ejemplo": {
+    "_nota": "Ejemplo para la demo. En producción lo actualizará el motor desde el repositorio Excel.",
+    "actualizado": "2026-11-02",
+    "items": [
+      { "categoria": "Prebenjamín", "nacidos": "2019-2020", "plazas": 4, "porteros": 1 },
+      { "categoria": "Benjamín", "nacidos": "2017-2018", "plazas": 3, "porteros": 0 },
+      { "categoria": "Alevín", "nacidos": "2015-2016", "plazas": 5, "porteros": 1 },
+      { "categoria": "Infantil", "nacidos": "2013-2014", "plazas": 2, "porteros": 1 },
+      { "categoria": "Cadete", "nacidos": "2011-2012", "plazas": 3, "porteros": 1 },
+      { "categoria": "Juvenil", "nacidos": "2008-2010", "plazas": 2, "porteros": 0 }
+    ]
+  },
+  "patrocinadores": [
+    { "nombre": "NORTESOL · Energía solar", "nivel": "Principal", "descripcion": "Instalación de placas solares para hogares y comercios del barrio" },
+    { "nombre": "Panadería La Espiga", "nivel": "Colaborador", "descripcion": "Desayunos y meriendas de los días de partido" },
+    { "nombre": "Fisio Norte Salud", "nivel": "Colaborador", "descripcion": "Fisioterapia deportiva" },
+    { "nombre": "Talleres Mendoza", "nivel": "Colaborador", "descripcion": "Mecánica y neumáticos" }
+  ],
+  "proteccion": {
+    "delegada": "Elena Quintana Prieto",
+    "cargo": "Delegada de Protección y Bienestar",
+    "email": "proteccion@vega-norte.es",
+    "protocolo_version": "1.0",
+    "protocolo_fecha": "Octubre de 2026",
+    "reglas_imagen": [
+      "No publicamos apellidos de menores",
+      "El nombre de pila solo aparece con el consentimiento de la familia registrado por el club",
+      "No ponemos a ningún menor en primer plano; preferimos grupos, planos de espaldas o a distancia",
+      "No señalamos a ningún menor por un error, una expulsión o una lesión",
+      "Las imágenes generadas con inteligencia artificial nunca muestran rostros reconocibles",
+      "Cualquier familia puede pedir que retiremos una imagen escribiendo a proteccion@vega-norte.es"
+    ]
+  },
+  "legal": {
+    "denominacion": "Asociación Deportiva Vega Norte",
+    "nif": "G-87654321",
+    "registro": "Registro de Asociaciones de la Comunidad de Madrid, nº 12.345 (ficticio)",
+    "domicilio": "Camino de la Vega s/n, 28108, zona norte de Madrid",
+    "email": "info@vega-norte.es"
+  },
+  "preguntas_frecuentes": [
+    { "p": "¿Desde qué edad pueden jugar los niños?", "r": "Desde los 5 años, en nuestro grupo Primeros pasos. Las categorías federadas empiezan en prebenjamín, con 6 años." },
+    { "p": "¿Cómo pido una prueba?", "r": "Rellenando el formulario de la página para familias o para jugadores. Te respondemos en un máximo de 5 días laborables." },
+    { "p": "¿Cuánto cuesta jugar en el club?", "r": "Entre 250 € y 430 € al año según la categoría, más el pack de equipación de 190 €. Los detalles están en la página de cuotas." },
+    { "p": "¿Qué incluye la cuota?", "r": "Ficha federativa, seguro deportivo, reconocimiento médico, entrenadores con titulación y entrenamientos de lunes a jueves." },
+    { "p": "¿Hay descuentos por hermanos?", "r": "Sí, un 10 % desde el segundo hermano, tanto en la cuota como en los campus." },
+    { "p": "¿Puedo pagar en plazos?", "r": "Sí. La inscripción se paga antes del 30 de junio y el resto en tres pagos: octubre, noviembre y diciembre." },
+    { "p": "¿Qué ropa necesita mi hijo o hija?", "r": "El pack de equipación del club, con dos equipaciones de juego, chándal y mochila. Para la prueba basta con ropa deportiva y botas." },
+    { "p": "¿Cuántos días se entrena?", "r": "De lunes a jueves, entre las 17:30 y las 20:30. Cada equipo entrena dos o tres días y juega el fin de semana." },
+    { "p": "¿Cómo protegéis a los menores?", "r": "Tenemos un protocolo de protección, una Delegada de Protección y Bienestar y reglas claras sobre el uso de imágenes. Todo está en la página de protección de menores." },
+    { "p": "¿Cómo puedo ser entrenador en el club?", "r": "Escríbenos desde la página Únete al cuerpo técnico. Buscamos titulados y también personas con ganas de formarse." },
+    { "p": "¿Se pueden ver los partidos?", "r": "Sí, las familias son bienvenidas en la grada. Pedimos respeto al árbitro, al rival y a los chicos y chicas, sea cual sea el resultado." }
+  ]
+}
