@@ -1,0 +1,214 @@
+/* Estilos globales de AD Vega Norte.
+   Solo usa variables de diseno/tokens.css (Manual de identidad v1.0).
+   No añadas aquí colores, fuentes ni tamaños de letra propios. */
+@import '../../diseno/tokens.css';
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 1rem;
+}
+
+body {
+  margin: 0;
+  min-width: 360px;
+  font: var(--vn-texto);
+  color: var(--vn-carbon);
+  background: var(--vn-blanco);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fotos e ilustraciones de contenido: esquinas de 16 px */
+.foto,
+main img {
+  border-radius: var(--vn-radio-foto);
+}
+
+/* ---------- Titulares: Oswald, mayúsculas por CSS, +1 % de espaciado ---------- */
+h1,
+h2,
+h3,
+.titular {
+  font-family: var(--vn-fuente-titulo);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--vn-granate);
+  margin: 0 0 0.5em;
+  overflow-wrap: break-word;
+}
+
+h1 {
+  font: var(--vn-h1);
+  letter-spacing: 0.01em;
+}
+
+h2 {
+  font: var(--vn-h2);
+  letter-spacing: 0.01em;
+}
+
+h3 {
+  font: var(--vn-h3);
+  letter-spacing: 0.01em;
+}
+
+/* Sobre fondo rojo o granate, titulares en blanco */
+.sobre-rojo :is(h1, h2, h3, .titular),
+.sobre-granate :is(h1, h2, h3, .titular) {
+  color: var(--vn-blanco);
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 1em;
+}
+
+.texto-pequeno,
+small {
+  font: var(--vn-texto-pequeno);
+}
+
+/* ---------- Enlaces y foco ---------- */
+a {
+  color: var(--vn-granate);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--vn-rojo);
+}
+
+:focus-visible {
+  outline: 3px solid var(--vn-carbon);
+  outline-offset: 2px;
+}
+
+.sobre-rojo :focus-visible,
+.sobre-granate :focus-visible {
+  outline-color: var(--vn-blanco);
+}
+
+.sobre-rojo {
+  background: var(--vn-rojo);
+  color: var(--vn-blanco);
+}
+
+.sobre-granate {
+  background: var(--vn-granate);
+  color: var(--vn-blanco);
+}
+
+.sobre-rojo a,
+.sobre-granate a {
+  color: var(--vn-blanco);
+}
+
+.sobre-arena {
+  background: var(--vn-arena);
+}
+
+/* ---------- Utilidades ---------- */
+.contenedor {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+.seccion {
+  padding-block: 3rem;
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.saltar {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: var(--vn-carbon);
+  color: var(--vn-blanco);
+  font-weight: 600;
+}
+
+.saltar:focus {
+  top: 8px;
+  color: var(--vn-blanco);
+}
+
+/* ---------- Botones ---------- */
+.boton {
+  display: inline-block;
+  padding: 0.625rem 1.25rem;
+  border: 2px solid var(--vn-rojo);
+  border-radius: 4px;
+  background: var(--vn-rojo);
+  color: var(--vn-blanco);
+  font-family: var(--vn-fuente-texto);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.boton:hover {
+  background: var(--vn-granate);
+  border-color: var(--vn-granate);
+  color: var(--vn-blanco);
+}
+
+.boton--secundario {
+  background: var(--vn-blanco);
+  color: var(--vn-rojo);
+}
+
+.boton--secundario:hover {
+  background: var(--vn-arena);
+  border-color: var(--vn-granate);
+  color: var(--vn-granate);
+}
+
+.sobre-rojo .boton {
+  background: var(--vn-blanco);
+  border-color: var(--vn-blanco);
+  color: var(--vn-rojo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

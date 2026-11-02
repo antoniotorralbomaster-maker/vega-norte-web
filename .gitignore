@@ -1,0 +1,18 @@
+# Dependencias y construcción
+node_modules/
+dist/
+.astro/
+
+# Variables de entorno: nunca subir un .env real
+.env
+.env.*
+!.env.example
+
+# Sistema y editores
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# Capturas de las comprobaciones
+capturas/

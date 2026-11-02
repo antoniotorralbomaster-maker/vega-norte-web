@@ -1,0 +1,51 @@
+---
+// Plantilla común: <head>, cabecera, contenido, pie y aviso de cookies (desactivado).
+import '../styles/global.css';
+import Cabecera from '../components/Cabecera.astro';
+import Pie from '../components/Pie.astro';
+import AvisoCookies from '../components/AvisoCookies.astro';
+import { club } from '../lib/datos';
+
+interface Props {
+  titulo: string;
+  descripcion?: string;
+  /** La portada usa solo el nombre del club como título de la pestaña */
+  portada?: boolean;
+}
+
+const { titulo, descripcion = club.club.proposito, portada = false } = Astro.props;
+const tituloPestana = portada ? `${club.club.nombre} · ${titulo}` : `${titulo} · ${club.club.nombre}`;
+const canonica = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloPestana}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonica} />
+    <!-- La web no es pública: se enseña solo en la presentación del TFM. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:title" content={tituloPestana} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:locale" content="es_ES" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap"
+    />
+  </head>
+  <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <Cabecera />
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
+    <Pie />
+    <AvisoCookies />
+  </body>
+</html>

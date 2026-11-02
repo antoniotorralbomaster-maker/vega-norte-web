@@ -1,0 +1,120 @@
+---
+// Pie: franja de patrocinadores, contacto, legal y protección de menores.
+import Escudo from './Escudo.astro';
+import FranjaPatrocinadores from './FranjaPatrocinadores.astro';
+import { club } from '../lib/datos';
+import { menuPie, visible } from '../lib/menu';
+import { titulosPorRuta, etiqueta } from '../lib/paginas';
+import { url } from '../lib/url';
+
+const titulos = await titulosPorRuta();
+const enlaces = menuPie.filter(visible);
+const { contacto, legal, proteccion } = club;
+const anio = new Date().getFullYear();
+---
+
+<footer class="pie">
+  <FranjaPatrocinadores />
+
+  <div class="pie__principal sobre-granate">
+    <div class="contenedor pie__rejilla">
+      <div class="pie__bloque">
+        <Escudo tono="blanco" />
+        <p class="pie__texto">{club.club.ambito}.</p>
+      </div>
+
+      <div class="pie__bloque">
+        <p class="pie__titulo titular">Contacto</p>
+        <address class="pie__texto">
+          {contacto.direccion}<br />
+          <a href={`tel:${contacto.telefono.replace(/\s/g, '')}`}>{contacto.telefono}</a><br />
+          <a href={`mailto:${contacto.emails.general}`}>{contacto.emails.general}</a>
+        </address>
+        <p class="pie__texto">Secretaría: {contacto.horario_secretaria}.</p>
+      </div>
+
+      <div class="pie__bloque">
+        <p class="pie__titulo titular">{proteccion.cargo}</p>
+        <p class="pie__texto">
+          {proteccion.delegada}<br />
+          <a href={`mailto:${proteccion.email}`}>{proteccion.email}</a>
+        </p>
+      </div>
+
+      <nav class="pie__bloque" aria-label="Información y legal">
+        <ul class="pie__enlaces">
+          {
+            enlaces.map((e) => (
+              <li>
+                <a href={url(e.ruta)}>{etiqueta(e, titulos)}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div class="contenedor pie__legal">
+      <p class="texto-pequeno">
+        © {anio} {legal.denominacion} · NIF {legal.nif} · {legal.registro}
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .pie__principal {
+    padding-block: 2.5rem 1.5rem;
+  }
+
+  .pie__rejilla {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 720px) {
+    .pie__rejilla {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .pie__rejilla {
+      grid-template-columns: 1.2fr 1.3fr 1fr 1fr;
+    }
+  }
+
+  .pie__titulo {
+    font-family: var(--vn-fuente-titulo);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 0.5rem;
+  }
+
+  .pie__texto {
+    font-style: normal;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0.5rem 0 0;
+  }
+
+  .pie__enlaces {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .pie__legal {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--vn-blanco) 35%, transparent);
+  }
+
+  .pie__legal p {
+    margin: 0;
+  }
+</style>

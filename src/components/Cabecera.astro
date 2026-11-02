@@ -1,0 +1,248 @@
+---
+// Cabecera con escudo y menú principal (desde src/lib/menu.ts).
+import Escudo from './Escudo.astro';
+import { menuPrincipal, visible, hijosVisibles } from '../lib/menu';
+import { titulosPorRuta, etiqueta } from '../lib/paginas';
+import { url, rutaNormalizada } from '../lib/url';
+
+const titulos = await titulosPorRuta();
+const actual = rutaNormalizada(Astro.url.pathname);
+const entradas = menuPrincipal.filter(visible);
+
+const esActual = (ruta: string) => actual === ruta;
+const enSeccion = (ruta: string, hijos: { ruta: string }[]) => {
+  if (ruta === '/') return actual === '/';
+  const prefijo = ruta.split('/').slice(0, 2).join('/');
+  return actual === ruta || actual.startsWith(prefijo + '/') || hijos.some((h) => h.ruta === actual);
+};
+---
+
+<header class="cabecera">
+  <div class="contenedor cabecera__barra">
+    <a class="cabecera__escudo" href={url('/')}>
+      <Escudo /><span class="solo-lectores">, ir al inicio</span>
+    </a>
+
+    <button class="cabecera__abrir" type="button" aria-expanded="false" aria-controls="menu-principal" hidden>
+      Menú
+    </button>
+
+    <nav id="menu-principal" class="menu" aria-label="Menú principal">
+      <ul class="menu__lista">
+        {
+          entradas.map((e) => {
+            const hijos = hijosVisibles(e);
+            return (
+              <li class={`menu__item${hijos.length ? ' menu__item--grupo' : ''}`}>
+                <a
+                  class:list={['menu__enlace', { 'menu__enlace--activo': enSeccion(e.ruta, hijos) }]}
+                  href={url(e.ruta)}
+                  aria-current={esActual(e.ruta) && !hijos.length ? 'page' : undefined}
+                >
+                  {e.etiqueta ?? etiqueta(e, titulos)}
+                </a>
+                {hijos.length > 0 && (
+                  <ul class="menu__sub" aria-label={e.etiqueta}>
+                    {hijos.map((h) => (
+                      <li>
+                        <a
+                          class="menu__subenlace"
+                          href={url(h.ruta)}
+                          aria-current={esActual(h.ruta) ? 'page' : undefined}
+                        >
+                          {etiqueta(h, titulos)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Menú plegable en móvil. Sin JavaScript el menú se muestra desplegado.
+  const boton = document.querySelector<HTMLButtonElement>('.cabecera__abrir');
+  const menu = document.getElementById('menu-principal');
+  if (boton && menu) {
+    boton.hidden = false;
+    document.documentElement.classList.add('con-js');
+    boton.addEventListener('click', () => {
+      const abierto = boton.getAttribute('aria-expanded') === 'true';
+      boton.setAttribute('aria-expanded', String(!abierto));
+      menu.classList.toggle('menu--abierto', !abierto);
+    });
+    document.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape' && boton.getAttribute('aria-expanded') === 'true') {
+        boton.setAttribute('aria-expanded', 'false');
+        menu.classList.remove('menu--abierto');
+        boton.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .cabecera {
+    background: var(--vn-blanco);
+    border-bottom: 4px solid var(--vn-rojo);
+    position: relative;
+    z-index: 10;
+  }
+
+  .cabecera__barra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-block: 0.75rem;
+  }
+
+  .cabecera__escudo {
+    text-decoration: none;
+  }
+
+  .cabecera__abrir {
+    font: var(--vn-texto);
+    font-weight: 600;
+    padding: 0.375rem 1rem;
+    background: var(--vn-blanco);
+    color: var(--vn-granate);
+    border: 2px solid var(--vn-granate);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .cabecera__abrir[aria-expanded='true'] {
+    background: var(--vn-granate);
+    color: var(--vn-blanco);
+  }
+
+  .menu__lista,
+  .menu__sub {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu__enlace,
+  .menu__subenlace {
+    display: block;
+    color: var(--vn-carbon);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .menu__enlace:hover,
+  .menu__subenlace:hover {
+    color: var(--vn-rojo);
+  }
+
+  .menu__enlace--activo {
+    color: var(--vn-granate);
+    box-shadow: inset 0 -3px 0 var(--vn-rojo);
+  }
+
+  .menu__subenlace[aria-current='page'] {
+    color: var(--vn-granate);
+    text-decoration: underline;
+  }
+
+  /* ---------- Móvil (hasta 1023 px) ---------- */
+  @media (max-width: 1023px) {
+    .menu {
+      flex-basis: 100%;
+    }
+
+    :global(.con-js) .menu:not(.menu--abierto) {
+      display: none;
+    }
+
+    .menu__lista {
+      border-top: 1px solid var(--vn-arena);
+      padding-block: 0.5rem;
+    }
+
+    .menu__enlace {
+      padding: 0.625rem 0;
+    }
+
+    .menu__enlace--activo {
+      box-shadow: inset 3px 0 0 var(--vn-rojo);
+      padding-left: 0.75rem;
+    }
+
+    .menu__sub {
+      padding-left: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .menu__subenlace {
+      font-weight: 400;
+      padding: 0.375rem 0;
+    }
+  }
+
+  /* ---------- Escritorio (1024 px o más) ---------- */
+  @media (min-width: 1024px) {
+    .cabecera__abrir {
+      display: none;
+    }
+
+    .menu__lista {
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .menu__item {
+      position: relative;
+    }
+
+    .menu__enlace {
+      padding: 0.5rem 0;
+    }
+
+    .menu__item--grupo > .menu__enlace::after {
+      content: '';
+      display: inline-block;
+      margin-left: 0.375rem;
+      vertical-align: 0.2em;
+      border: 5px solid transparent;
+      border-top-color: currentColor;
+      border-bottom: 0;
+    }
+
+    .menu__sub {
+      position: absolute;
+      top: 100%;
+      left: -1rem;
+      min-width: 15rem;
+      padding: 0.5rem 0;
+      background: var(--vn-blanco);
+      border-top: 3px solid var(--vn-rojo);
+      box-shadow: 0 6px 16px color-mix(in srgb, var(--vn-carbon) 18%, transparent);
+      display: none;
+    }
+
+    .menu__item--grupo:hover > .menu__sub,
+    .menu__item--grupo:focus-within > .menu__sub {
+      display: block;
+    }
+
+    .menu__subenlace {
+      padding: 0.5rem 1rem;
+    }
+
+    .menu__subenlace:hover,
+    .menu__subenlace:focus-visible {
+      background: var(--vn-arena);
+      color: var(--vn-granate);
+    }
+  }
+</style>

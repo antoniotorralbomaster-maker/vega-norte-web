@@ -1,0 +1,61 @@
+---
+// Escudo del club. ÚNICO punto de sustitución de vega-norte-escudo-*.svg.
+// Si src/assets/escudo/ no contiene ningún SVG, se muestra el marcador de texto.
+import { club } from '../lib/datos';
+
+interface Props {
+  /** 'color' para fondos claros, 'blanco' para fondos rojo o granate */
+  tono?: 'color' | 'blanco';
+  /** Altura del escudo en px cuando existe el SVG */
+  alto?: number;
+}
+
+const { tono = 'color', alto = 48 } = Astro.props;
+
+const ficheros = import.meta.glob<string>('../assets/escudo/vega-norte-escudo-*.svg', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+const rutas = Object.entries(ficheros);
+const elegido =
+  rutas.find(([n]) => n.includes(`-${tono}`)) ?? rutas.find(([n]) => n.includes('-color')) ?? rutas[0];
+const svg = elegido?.[1];
+const nombre = club.club.nombre;
+---
+
+{
+  svg ? (
+    <img class="escudo" src={svg} alt={nombre} height={alto} style={`height:${alto}px;width:auto`} />
+  ) : (
+    <span class={`escudo-marcador escudo-marcador--${tono}`}>
+      {nombre}
+    </span>
+  )
+}
+
+<style>
+  .escudo {
+    display: block;
+    border-radius: 0;
+  }
+
+  .escudo-marcador {
+    display: inline-block;
+    font-family: var(--vn-fuente-titulo);
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .escudo-marcador--color {
+    color: var(--vn-granate);
+  }
+
+  .escudo-marcador--blanco {
+    color: var(--vn-blanco);
+  }
+</style>
