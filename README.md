@@ -60,6 +60,8 @@ Las rutas que aún no se han construido aparecen como avisos. Cuando se construy
 | `diseno/tokens.css` | Colores, tipografías y escala del Manual de identidad v1.0 |
 | `src/content.config.ts` | Esquema de páginas y noticias (el de noticias lo usa n8n: no cambiarlo sin avisar) |
 | `src/lib/menu.ts` | Menú principal y del pie, con las rutas de fase 2 ya colocadas y ocultas |
+| `src/components/Formulario.astro` | Formulario genérico construido desde `datos/formularios.json` (lógica en `src/scripts/formulario.ts`) |
+| `.env.example` | Las cuatro variables de los webhooks de n8n, vacías |
 | `src/lib/config.ts` | Interruptores del sitio (aviso de cookies) |
 | `src/components/` | Cabecera, pie, escudo, aviso de cookies y componentes de datos: cifras, tablas de categorías, cuotas y plazas, acordeón de preguntas, regla de imágenes, patrocinadores, resultados y tarjetas de noticia |
 | `src/pages/[...ruta].astro` | Publica cada página de `contenido/paginas` en la ruta de su `slug` |
@@ -78,6 +80,34 @@ Las rutas que aún no se han construido aparecen como avisos. Cuando se construy
 - **Protocolo de protección**: copia `public/documentos/protocolo-proteccion.pdf`; el botón «Descargar el protocolo» aparece solo cuando el fichero existe.
 - **Escudo**: copia `vega-norte-escudo-color.svg` (y opcionalmente `-blanco.svg`) en `src/assets/escudo/`.
 - **Fase 2**: cambia `fase: 2` por `fase: 1` en `src/lib/menu.ts` cuando exista la página.
+
+## Formularios y n8n
+
+Los cuatro formularios (familias, jugadores, entrenadores y contacto) se construyen desde `datos/formularios.json` con un único componente (`src/components/Formulario.astro` y `src/scripts/formulario.ts`).
+
+- **Modo demostración** (por defecto): si la variable de entorno del formulario no existe, la web valida los datos y muestra «Modo demostración», pero **no envía nada**. Con el desplegable «Ver los datos que se enviarían» se ve la carga exacta, útil para la presentación.
+- **Conectar n8n**: copia `.env.example` como `.env` (o define las variables en el alojamiento) y pon la URL del webhook de cada formulario. Las URL deben ser `https`. Se leen **al construir**, así que hay que reconstruir tras cambiarlas. Nunca subas el `.env` real.
+
+```bash
+cp .env.example .env
+```
+
+- **Qué recibe n8n**: un `POST` con `Content-Type: application/json`:
+
+```json
+{
+  "formulario": "familias",
+  "fecha_envio": "2026-11-02T18:30:00.000Z",
+  "origen_pagina": "/ven-a-jugar/familias",
+  "datos": { "tutor_nombre": "…", "email": "…", "telefono": "", "jugador_nombre": "…", "jugador_nacimiento": 2016, "club_actual": "", "mensaje": "" },
+  "consentimientos": { "acepta_privacidad": true }
+}
+```
+
+  Los campos opcionales vacíos llegan como `""`, para que las columnas del Excel sean siempre las mismas. El año de nacimiento llega como número. El campo trampa no se envía: si un robot lo rellena, la web finge el envío y no manda nada.
+- **Respuesta**: si el webhook responde con un código 2xx, se muestra `respuesta_ok` y se vacía el formulario. Con cualquier otro código, un error de red o 15 s sin respuesta, se muestra `respuesta_error` y se conservan los datos.
+- **CORS**: la web y n8n están en dominios distintos, así que el nodo Webhook de n8n debe permitir el origen de la web («Allowed Origins (CORS)»).
+- **Sin JavaScript** el botón queda desactivado y se ofrece el correo del club, para que los datos nunca acaben en la dirección de la página.
 
 ## Despliegue
 
