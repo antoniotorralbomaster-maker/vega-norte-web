@@ -1,0 +1,34 @@
+/* Tokens de diseño de AD Vega Norte — Manual de identidad v1.0 (octubre de 2026).
+   La guía de estilo posterior puede cambiar estos valores; no uses colores o tipografías fuera de este archivo. */
+:root {
+  /* Color */
+  --vn-rojo: #D81E2A;      /* principal: fondos de marca, fajas, botones, destacados */
+  --vn-granate: #7A0E16;   /* secundario: cabeceras, titulares sobre claro */
+  --vn-blanco: #FFFFFF;    /* fondo principal y texto sobre rojo */
+  --vn-carbon: #1A1A1A;    /* texto principal */
+  --vn-arena: #F3F1EE;     /* fondo neutro de bloques y tarjetas */
+  --vn-gris: #5C5C5C;      /* texto secundario, pies y metadatos */
+  --vn-oro: #C9A227;       /* solo logros: campeonatos, ascensos, aniversarios. Nunca para texto */
+  --vn-victoria: #1E8E4E;  /* solo marcadores y tablas; texto de 24 px o más sobre blanco */
+  --vn-empate: #B07A00;    /* solo marcadores y tablas; texto de 24 px o más sobre blanco */
+  --vn-derrota: #5C5C5C;   /* solo marcadores y tablas */
+
+  /* Proporción orientativa por pantalla: 60 % blanco o arena, 30 % rojo, 10 % granate y carbón. Oro máx. 5 %. */
+
+  /* Tipografía (Google Fonts, licencia OFL): Oswald 500/700 y Source Sans 3 400/600 */
+  --vn-fuente-titulo: "Oswald", sans-serif;       /* titulares, siempre en mayúsculas; +1 % de espaciado */
+  --vn-fuente-texto: "Source Sans 3", sans-serif; /* texto corrido, tablas, botones y formularios */
+  --vn-h1: 700 48px/56px var(--vn-fuente-titulo);
+  --vn-h2: 700 32px/40px var(--vn-fuente-titulo);
+  --vn-h3: 500 24px/32px var(--vn-fuente-titulo);
+  --vn-texto: 400 18px/28px var(--vn-fuente-texto);
+  --vn-texto-pequeno: 400 14px/20px var(--vn-fuente-texto);
+
+  /* Forma */
+  --vn-radio-foto: 16px;
+}
+
+/* Contrastes permitidos (WCAG 2.1, calculados en el manual):
+   blanco sobre rojo 5,1:1 · rojo sobre blanco 5,1:1 · rojo sobre arena 4,5:1 (límite)
+   blanco sobre granate 11,0:1 · carbón sobre blanco 17,4:1 · gris sobre blanco 6,7:1
+   Prohibido: oro sobre blanco para texto (2,4:1). */
