@@ -108,12 +108,15 @@ function iniciar(form: HTMLFormElement) {
 
   boton.disabled = false;
 
-  // Al corregir un campo con error, se revalida al salir de él.
+  // Un campo con error se revalida mientras se corrige (al escribir o al cambiarlo),
+  // no al salir de él: así el formulario no se mueve justo cuando se hace clic en
+  // otro campo o en la casilla, y el clic no se pierde.
   for (const c of controles) {
-    const evento = c instanceof HTMLInputElement && c.type === 'checkbox' ? 'change' : 'blur';
-    c.addEventListener(evento, () => {
+    const revalidar = () => {
       if (c.getAttribute('aria-invalid') === 'true') marcar(c, validar(c));
-    });
+    };
+    c.addEventListener('input', revalidar);
+    c.addEventListener('change', revalidar);
   }
 
   form.addEventListener('submit', async (ev) => {

@@ -15,4 +15,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Reglas de CLAUDE.md sobre el HTML generado y el código
       - run: npm run check
+      # Pruebas en el navegador: axe (WCAG 2.1 AA), teclado, 360 px y formularios
+      # en modo demostración (la construcción de CI no tiene variables de webhook).
+      - run: npm i --no-save playwright@1.63.0
+      - run: npx playwright install --with-deps chromium
+      - run: npm run accesibilidad

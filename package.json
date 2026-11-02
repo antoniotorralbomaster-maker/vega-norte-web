@@ -9,7 +9,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "comprobar": "node scripts/comprobar.mjs",
-    "check": "astro build && node scripts/comprobar.mjs"
+    "check": "astro build && node scripts/comprobar.mjs",
+    "accesibilidad": "node scripts/accesibilidad.mjs"
   },
   "engines": {
     "node": ">=20.3"
@@ -17,5 +18,8 @@
   "dependencies": {
     "astro": "5.18.2",
     "marked": "15.0.12"
+  },
+  "devDependencies": {
+    "axe-core": "4.14.0"
   }
 }

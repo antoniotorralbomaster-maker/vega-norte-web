@@ -59,11 +59,9 @@ const RUTAS_MVP = [
   '/legal/aviso-legal',
 ];
 
-// Rutas que se construyen en bloques posteriores. Cada bloque las va quitando de
-// esta lista; al terminar el MVP debe quedar vacía y cualquier ruta ausente será error.
-const RUTAS_PENDIENTES = new Set([]);
-
-const NOTICIAS_PENDIENTES = false;
+// Si MOSTRAR_NOTICIAS_EJEMPLO es false, las noticias con `ejemplo: true` no se publican.
+const config = readFileSync(join(RAIZ, 'src/lib/config.ts'), 'utf8');
+const MOSTRAR_EJEMPLOS = !/MOSTRAR_NOTICIAS_EJEMPLO\s*=\s*false/.test(config);
 
 if (!existsSync(DIST)) {
   console.error('No existe dist/. Ejecuta antes «npm run build» o usa «npm run check».');
@@ -73,21 +71,19 @@ if (!existsSync(DIST)) {
 const htmlDeRuta = (ruta) => join(DIST, ruta === '/' ? 'index.html' : `${ruta.slice(1)}/index.html`);
 
 for (const ruta of RUTAS_MVP) {
-  if (existsSync(htmlDeRuta(ruta))) continue;
-  if (RUTAS_PENDIENTES.has(ruta)) aviso('rutas', `${ruta} pendiente (se construye en un bloque posterior)`);
-  else error('rutas', `${ruta} no se ha generado`);
+  if (!existsSync(htmlDeRuta(ruta))) error('rutas', `${ruta} no se ha generado`);
 }
 
 const noticias = ficheros(join(RAIZ, 'contenido/noticias'), ['.md']);
 for (const n of noticias) {
   const slug = n.split('/').pop().replace(/\.md$/, '');
   const ruta = `/noticias/${slug}`;
-  if (existsSync(htmlDeRuta(ruta))) continue;
-  if (NOTICIAS_PENDIENTES) aviso('rutas', `${ruta} pendiente (bloque de noticias)`);
-  else error('rutas', `${ruta} no se ha generado`);
+  const esEjemplo = /^ejemplo:\s*true\s*$/m.test(readFileSync(n, 'utf8').split(/^---$/m)[1] ?? '');
+  if (esEjemplo && !MOSTRAR_EJEMPLOS) continue;
+  if (!existsSync(htmlDeRuta(ruta))) error('rutas', `${ruta} no se ha generado`);
 }
 
-// Enlaces internos rotos (solo hacia rutas que deberían existir ya)
+// Enlaces internos rotos
 const paginasHtml = ficheros(DIST, ['.html']);
 for (const p of paginasHtml) {
   const html = readFileSync(p, 'utf8');
@@ -96,9 +92,7 @@ for (const p of paginasHtml) {
     let ruta = BASE && href.startsWith(BASE) ? href.slice(BASE.length) : href;
     ruta = ruta.replace(/\/$/, '') || '/';
     if (extname(ruta)) continue;
-    if (existsSync(htmlDeRuta(ruta))) continue;
-    const pendiente = RUTAS_PENDIENTES.has(ruta) || (NOTICIAS_PENDIENTES && ruta.startsWith('/noticias'));
-    if (!pendiente) error('enlaces', `${rel(p)} enlaza a ${href}, que no existe`);
+    if (!existsSync(htmlDeRuta(ruta))) error('enlaces', `${rel(p)} enlaza a ${href}, que no existe`);
   }
 }
 
@@ -223,7 +217,42 @@ for (const md of ficheros(join(RAIZ, 'contenido/paginas'), ['.md'])) {
 }
 
 // ---------------------------------------------------------------------------
-// 9. Nunca subir un .env real
+// 9. Sin apellidos de menores
+// ---------------------------------------------------------------------------
+// Heurística: busca «Nombre Apellido» con un apellido frecuente en España.
+// Solo se permiten los adultos del club que figuran en datos/club.json
+// (directiva y Delegada), que son ficticios. Cualquier otra coincidencia es un
+// error: si es un adulto o un nombre de lugar, hay que revisarlo a mano.
+const APELLIDOS = new Set(
+  `García Rodríguez González Fernández López Martínez Sánchez Pérez Gómez Martín Jiménez Ruiz Hernández Díaz Moreno
+  Muñoz Álvarez Romero Alonso Gutiérrez Navarro Torres Domínguez Vázquez Ramos Gil Ramírez Serrano Molina Morales
+  Suárez Ortega Delgado Castro Ortiz Rubio Marín Sanz Núñez Iglesias Medina Garrido Cortés Castillo Lozano Guerrero
+  Cano Prieto Méndez Calvo Gallego Vidal Márquez Herrera Peña Cabrera Carrasco Díez Caballero Reyes Nieto Aguilar
+  Pascual Santana Herrero Lorenzo Montero Hidalgo Giménez Ibáñez Ferrer Durán Benítez Mora Vicente Vargas Arias
+  Carmona Crespo Román Pastor Soto Sáez Velasco Moya Soler Parra Esteban Bravo Gallardo Rojas Olmedo Berrocal Lara
+  Arranz Quintana Heras Montes Rivas Pardo Mendoza Sierra Aguado Rey Merino Bermejo Lucas Benito`.split(/\s+/),
+);
+const ficha = JSON.parse(fichaTexto);
+// Nombres permitidos con apellido: adultos ficticios del club y patrocinadores (negocios).
+const PERMITIDOS = [...ficha.directiva.map((d) => d.nombre), ficha.proteccion.delegada, ...ficha.patrocinadores.map((p) => p.nombre)];
+const PAREJA = /([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)\s+(?=([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+))/g;
+
+function buscarApellidos(texto, donde) {
+  for (const [, antes, despues] of texto.matchAll(PAREJA)) {
+    if (!APELLIDOS.has(despues)) continue;
+    const pareja = `${antes} ${despues}`;
+    if (PERMITIDOS.some((n) => n.includes(pareja))) continue;
+    error('menores', `${donde}: «${pareja}» parece un nombre con apellido; los menores solo aparecen con nombre de pila`);
+  }
+}
+
+for (const f of [...ficheros(join(RAIZ, 'contenido'), ['.md']), ...ficheros(join(RAIZ, 'datos'), ['.json'])])
+  buscarApellidos(readFileSync(f, 'utf8'), rel(f));
+for (const p of paginasHtml)
+  buscarApellidos(textoPlano(readFileSync(p, 'utf8').replace(/<(script|style)\b[\s\S]*?<\/\1>/g, '')), rel(p));
+
+// ---------------------------------------------------------------------------
+// 10. Nunca subir un .env real
 // ---------------------------------------------------------------------------
 try {
   const seguidos = execSync('git ls-files', { cwd: RAIZ, encoding: 'utf8' }).split('\n');

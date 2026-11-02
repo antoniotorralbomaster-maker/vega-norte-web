@@ -45,9 +45,40 @@ Construye la web y ejecuta `scripts/comprobar.mjs`, que revisa:
 - que los formularios solo piden nombre de pila y año de nacimiento del menor, y que ninguna casilla viene marcada;
 - que ninguna indicación interna («Se genera…», «Nota interna», «(Fase 2)», `datos/…`) llega a la web;
 - que los correos, teléfonos y NIF escritos en los textos coinciden con `datos/club.json`;
-- que no hay ningún `.env` en git.
+- que no hay ningún `.env` en git;
+- que no aparecen apellidos de menores (heurística con apellidos frecuentes; solo se admiten los adultos ficticios de `datos/club.json` y los patrocinadores).
 
-Las rutas que aún no se han construido aparecen como avisos. Cuando se construye una ruta, se quita de `RUTAS_PENDIENTES` en el script. GitHub Actions ejecuta lo mismo en cada pull request (`.github/workflows/comprobar.yml`).
+### En el navegador
+
+```bash
+npm run build
+```
+
+```bash
+npm run accesibilidad
+```
+
+Abre todas las páginas a 360 px y a 1280 px y comprueba:
+
+- axe-core con WCAG 2.1 A y AA, incluido el contraste;
+- que no hay desplazamiento horizontal;
+- que Oswald nunca baja de 14 px y siempre va en mayúsculas;
+- que no hay oro en ningún texto y que los colores de resultado solo están en marcadores y tablas;
+- el recorrido con teclado;
+- el menú móvil;
+- los cuatro formularios en modo demostración.
+
+Necesita Playwright con Chromium. Si no lo tienes:
+
+```bash
+npm i --no-save playwright
+```
+
+```bash
+npx playwright install chromium
+```
+
+GitHub Actions ejecuta las dos comprobaciones en cada pull request (`.github/workflows/comprobar.yml`). El resultado de la revisión final del MVP está en [`docs/revision-final.md`](docs/revision-final.md).
 
 ## Estructura
 
