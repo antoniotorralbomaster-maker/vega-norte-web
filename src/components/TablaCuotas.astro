@@ -1,0 +1,43 @@
+---
+// Tabla de cuotas (bloque 15). Lee `categorias` y `cuotas` de datos/club.json.
+// Las categorías consecutivas con la misma cuota se agrupan en una fila.
+import { club } from '../lib/datos';
+import { filasCuotas, unirNombres } from '../lib/categorias';
+import { euros } from '../lib/formato';
+
+interface Props {
+  nota?: string;
+}
+
+const { nota } = Astro.props;
+const { inscripcion, numero_pagos, temporada } = club.cuotas;
+const filas = filasCuotas();
+---
+
+<div class="tabla-marco" role="region" aria-label={`Cuotas de la temporada ${temporada}`} tabindex="0">
+  <table class="tabla">
+    {nota && <caption>{nota}</caption>}
+    <thead>
+      <tr>
+        <th scope="col">Categoría</th>
+        <th scope="col">Edad</th>
+        <th scope="col" class="num">Cuota anual</th>
+        <th scope="col" class="num">Inscripción</th>
+        <th scope="col" class="num">{numero_pagos} pagos de</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        filas.map((f) => (
+          <tr>
+            <th scope="row">{unirNombres(f.categorias)}</th>
+            <td>{f.edad}</td>
+            <td class="num">{euros(f.cuota_anual)}</td>
+            <td class="num">{euros(inscripcion)}</td>
+            <td class="num">{euros(f.pagos)}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

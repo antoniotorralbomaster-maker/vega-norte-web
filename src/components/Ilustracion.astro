@@ -1,0 +1,118 @@
+---
+// Ilustraciones sencillas en los colores del club, sin personas.
+// Sustituyen a las fotos mientras no haya imágenes propias. Son decorativas
+// (aria-hidden): el texto que acompañan ya dice lo que hace falta.
+interface Props {
+  motivo?: 'campo' | 'conos' | 'balon';
+  class?: string;
+}
+
+const { motivo = 'campo', class: clase } = Astro.props;
+---
+
+<svg
+  class:list={['ilustracion', `ilustracion--${motivo}`, clase]}
+  viewBox="0 0 400 240"
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  focusable="false"
+>
+  <rect class="i-fondo" width="400" height="240"></rect>
+  {
+    motivo === 'campo' && (
+      <g>
+        <rect class="i-rojo" x="30" y="30" width="340" height="180" rx="4" />
+        <g class="i-linea">
+          <rect x="44" y="44" width="312" height="152" />
+          <line x1="200" y1="44" x2="200" y2="196" />
+          <circle cx="200" cy="120" r="30" />
+          <rect x="44" y="84" width="44" height="72" />
+          <rect x="312" y="84" width="44" height="72" />
+        </g>
+        <circle class="i-blanco" cx="200" cy="120" r="5" />
+      </g>
+    )
+  }
+  {
+    motivo === 'conos' && (
+      <g>
+        <rect class="i-granate" x="0" y="176" width="400" height="64" />
+        <g class="i-rojo">
+          <path d="M70 176 L92 112 L114 176 Z" />
+          <path d="M170 176 L192 112 L214 176 Z" />
+          <path d="M270 176 L292 112 L314 176 Z" />
+        </g>
+        <g class="i-blanco">
+          <rect x="80" y="140" width="24" height="7" />
+          <rect x="180" y="140" width="24" height="7" />
+          <rect x="280" y="140" width="24" height="7" />
+        </g>
+        <rect class="i-rojo" x="56" y="172" width="72" height="8" rx="2" />
+        <rect class="i-rojo" x="156" y="172" width="72" height="8" rx="2" />
+        <rect class="i-rojo" x="256" y="172" width="72" height="8" rx="2" />
+      </g>
+    )
+  }
+  {
+    motivo === 'balon' && (
+      <g>
+        <rect class="i-rojo" x="0" y="176" width="400" height="64" />
+        <circle class="i-blanco i-borde" cx="200" cy="120" r="56" />
+        <path class="i-carbon" d="M200 98 L221 113 L213 138 L187 138 L179 113 Z" />
+        <g class="i-trazo">
+          <line x1="200" y1="98" x2="200" y2="64" />
+          <line x1="221" y1="113" x2="252" y2="103" />
+          <line x1="213" y1="138" x2="232" y2="166" />
+          <line x1="187" y1="138" x2="168" y2="166" />
+          <line x1="179" y1="113" x2="148" y2="103" />
+        </g>
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  .ilustracion {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 5 / 3;
+    border-radius: var(--vn-radio-foto);
+  }
+
+  .i-fondo {
+    fill: var(--vn-arena);
+  }
+
+  .i-rojo {
+    fill: var(--vn-rojo);
+  }
+
+  .i-granate {
+    fill: var(--vn-granate);
+  }
+
+  .i-blanco {
+    fill: var(--vn-blanco);
+  }
+
+  .i-carbon {
+    fill: var(--vn-carbon);
+  }
+
+  .i-linea {
+    fill: none;
+    stroke: var(--vn-blanco);
+    stroke-width: 3;
+  }
+
+  .i-borde {
+    stroke: var(--vn-carbon);
+    stroke-width: 3;
+  }
+
+  .i-trazo {
+    stroke: var(--vn-carbon);
+    stroke-width: 3;
+  }
+</style>

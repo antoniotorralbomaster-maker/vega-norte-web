@@ -1,0 +1,101 @@
+---
+// Tarjeta de noticia para portada y listado: ilustración, categoría, fecha y titular.
+import Ilustracion from './Ilustracion.astro';
+import PastillaCategoria from './PastillaCategoria.astro';
+import { rutaNoticia, etiquetaNoticia, TIPOS, type Noticia } from '../lib/noticias';
+import { fecha, fechaIso } from '../lib/formato';
+import { url } from '../lib/url';
+
+interface Props {
+  noticia: Noticia;
+  nivel?: 2 | 3;
+}
+
+const { noticia, nivel = 3 } = Astro.props;
+const { titulo, tipo, fecha: f } = noticia.data;
+const Titulo = `h${nivel}` as 'h2' | 'h3';
+---
+
+<article class="noticia" data-tipo={tipo}>
+  <Ilustracion motivo={TIPOS[tipo].motivo} />
+  <div class="noticia__cuerpo">
+    <p class="noticia__meta">
+      <PastillaCategoria texto={etiquetaNoticia(noticia)} />
+      <time datetime={fechaIso(f)}>{fecha(f)}</time>
+    </p>
+    <Titulo class="noticia__titulo">
+      <a href={url(rutaNoticia(noticia))}>{titulo}</a>
+    </Titulo>
+    <p class="noticia__tipo texto-pequeno">{TIPOS[tipo].singular}</p>
+  </div>
+</article>
+
+<style>
+  .noticia {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--vn-blanco);
+    border: 1px solid var(--vn-arena);
+    border-radius: var(--vn-radio-foto);
+    overflow: hidden;
+  }
+
+  .noticia :global(.ilustracion) {
+    border-radius: 0;
+  }
+
+  .noticia__cuerpo {
+    padding: 1rem 1.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .noticia__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin: 0 0 0.75rem;
+    font: var(--vn-texto-pequeno);
+    color: var(--vn-gris);
+  }
+
+  .noticia__titulo {
+    font: var(--vn-h3);
+    letter-spacing: 0.01em;
+    margin: 0 0 0.5rem;
+  }
+
+  .noticia__titulo a {
+    color: var(--vn-granate);
+    text-decoration: none;
+  }
+
+  /* Toda la tarjeta es clicable, pero el enlace es solo el titular */
+  .noticia__titulo a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .noticia__titulo a:hover {
+    text-decoration: underline;
+  }
+
+  .noticia:focus-within {
+    outline: 3px solid var(--vn-carbon);
+    outline-offset: 2px;
+  }
+
+  .noticia__titulo a:focus-visible {
+    outline: none;
+  }
+
+  .noticia__tipo {
+    margin: auto 0 0;
+    color: var(--vn-gris);
+  }
+</style>

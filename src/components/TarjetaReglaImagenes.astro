@@ -1,0 +1,48 @@
+---
+// Tarjeta «Nuestra regla de imágenes» (bloque 9). Lee `proteccion.reglas_imagen` de datos/club.json.
+import { club } from '../lib/datos';
+
+interface Props {
+  titulo?: string;
+  nivel?: 2 | 3;
+}
+
+const { titulo = 'Nuestra regla de imágenes', nivel = 2 } = Astro.props;
+const reglas = club.proteccion.reglas_imagen;
+const Titulo = `h${nivel}` as 'h2' | 'h3';
+---
+
+<aside class="regla sobre-arena" aria-label={titulo}>
+  <Titulo class="regla__titulo">{titulo}</Titulo>
+  <ol class="regla__lista">
+    {reglas.map((r) => <li>{r}.</li>)}
+  </ol>
+</aside>
+
+<style>
+  .regla {
+    border-left: 6px solid var(--vn-rojo);
+    border-radius: 4px;
+    padding: 1.5rem 1.5rem 1rem;
+    margin-block: 1.5rem;
+  }
+
+  .regla__titulo {
+    font: var(--vn-h3);
+    letter-spacing: 0.01em;
+  }
+
+  .regla__lista {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+
+  .regla__lista li {
+    margin-bottom: 0.5rem;
+  }
+
+  .regla__lista li::marker {
+    color: var(--vn-granate);
+    font-weight: 600;
+  }
+</style>

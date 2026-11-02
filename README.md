@@ -59,7 +59,8 @@ Las rutas que aún no se han construido aparecen como avisos. Cuando se construy
 | `src/content.config.ts` | Esquema de páginas y noticias (el de noticias lo usa n8n: no cambiarlo sin avisar) |
 | `src/lib/menu.ts` | Menú principal y del pie, con las rutas de fase 2 ya colocadas y ocultas |
 | `src/lib/config.ts` | Interruptores del sitio (aviso de cookies) |
-| `src/components/` | Cabecera, pie, franja de patrocinadores, escudo, aviso de cookies… |
+| `src/components/` | Cabecera, pie, escudo, aviso de cookies y componentes de datos: cifras, tablas de categorías, cuotas y plazas, acordeón de preguntas, regla de imágenes, patrocinadores, resultados y tarjetas de noticia |
+| `src/lib/secciones.ts` | Lectura de las páginas escritas por bloques (`inicio.md`): los textos entre «comillas» se publican; el resto son notas internas |
 | `src/assets/escudo/` | Punto único de sustitución del escudo (ver su `LEEME.md`) |
 | `scripts/comprobar.mjs` | Comprobaciones automáticas |
 

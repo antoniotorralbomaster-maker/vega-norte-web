@@ -28,6 +28,9 @@ body {
 
 main {
   flex: 1;
+  /* Evita que una tabla ancha estire la página en móvil */
+  min-width: 0;
+  width: 100%;
 }
 
 img,
@@ -210,5 +213,123 @@ a:hover {
   *::after {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* ---------- Tablas de datos ---------- */
+/* El contenedor permite desplazar la tabla en horizontal en pantallas
+   estrechas sin que se desplace la página entera. */
+.tabla-marco {
+  position: relative; /* contiene los textos .solo-lectores de la tabla */
+  overflow-x: auto;
+  margin-block: 1.5rem;
+  border-radius: 4px;
+}
+
+.tabla {
+  width: 100%;
+  min-width: 32rem;
+  border-collapse: collapse;
+  font: var(--vn-texto);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.tabla caption {
+  caption-side: bottom;
+  text-align: left;
+  padding-top: 0.75rem;
+  font: var(--vn-texto-pequeno);
+  color: var(--vn-gris);
+}
+
+.tabla th,
+.tabla td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--vn-arena);
+}
+
+.tabla thead th {
+  background: var(--vn-granate);
+  color: var(--vn-blanco);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tabla tbody tr:nth-child(even) {
+  background: var(--vn-arena);
+}
+
+.tabla tbody th {
+  font-weight: 600;
+}
+
+.tabla tfoot td,
+.tabla tfoot th {
+  font-weight: 600;
+  border-top: 2px solid var(--vn-granate);
+  border-bottom: 0;
+}
+
+.tabla .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Botón de contorno blanco, para fondos rojo o granate */
+.sobre-rojo .boton--contorno,
+.sobre-granate .boton--contorno {
+  background: transparent;
+  border-color: var(--vn-blanco);
+  color: var(--vn-blanco);
+}
+
+.sobre-rojo .boton--contorno:hover,
+.sobre-granate .boton--contorno:hover {
+  background: var(--vn-granate);
+  border-color: var(--vn-blanco);
+  color: var(--vn-blanco);
+}
+
+.sobre-rojo .boton:not(.boton--contorno):hover {
+  background: var(--vn-arena);
+  border-color: var(--vn-arena);
+  color: var(--vn-granate);
+}
+
+/* Cabecera de sección con enlace a la derecha */
+.seccion__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.seccion__cabecera > :is(h2, h3) {
+  margin: 0;
+}
+
+.rejilla-3 {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .rejilla-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .rejilla-3 {
+    grid-template-columns: repeat(3, 1fr);
   }
 }

@@ -1,0 +1,131 @@
+---
+// Acordeón de preguntas frecuentes (bloque 16). Lee `preguntas_frecuentes` de datos/club.json.
+// Usa <details>/<summary>: funciona con teclado y sin JavaScript.
+// Agrupación según preguntas-frecuentes.md: Empezar, Dinero y Día a día.
+// Una pregunta nueva que no encaje en ningún grupo va a «Día a día».
+import { club } from '../lib/datos';
+
+interface Props {
+  agrupar?: boolean;
+  /** Nivel del título de cada grupo */
+  nivel?: 2 | 3;
+}
+
+const { agrupar = true, nivel = 2 } = Astro.props;
+type Pregunta = (typeof club.preguntas_frecuentes)[number];
+
+const REGLAS: { titulo: string; patron: RegExp | null }[] = [
+  { titulo: 'Empezar', patron: /edad|prueba|hermanos/i },
+  { titulo: 'Dinero', patron: /cuesta|cuota|plazos|pagar|ropa/i },
+  { titulo: 'Día a día', patron: null },
+];
+
+let grupos: { titulo: string; preguntas: Pregunta[] }[];
+if (agrupar) {
+  grupos = REGLAS.map((r) => ({ titulo: r.titulo, preguntas: [] }));
+  for (const p of club.preguntas_frecuentes) {
+    const i = REGLAS.findIndex((r) => r.patron?.test(p.p));
+    grupos[i === -1 ? REGLAS.length - 1 : i].preguntas.push(p);
+  }
+} else {
+  grupos = [{ titulo: '', preguntas: club.preguntas_frecuentes }];
+}
+const Titulo = `h${nivel}` as 'h2' | 'h3';
+---
+
+<div class="faq">
+  {
+    grupos
+      .filter((g) => g.preguntas.length)
+      .map((g) => (
+        <section class="faq__grupo">
+          {g.titulo && <Titulo class="faq__titulo">{g.titulo}</Titulo>}
+          {g.preguntas.map((p) => (
+            <details class="faq__item">
+              <summary class="faq__pregunta">
+                <span>{p.p}</span>
+                <span class="faq__signo" aria-hidden="true" />
+              </summary>
+              <p class="faq__respuesta">{p.r}</p>
+            </details>
+          ))}
+        </section>
+      ))
+  }
+</div>
+
+<style>
+  .faq__grupo + .faq__grupo {
+    margin-top: 2.5rem;
+  }
+
+  .faq__titulo {
+    font: var(--vn-h3);
+    letter-spacing: 0.01em;
+  }
+
+  .faq__item {
+    border-bottom: 1px solid var(--vn-arena);
+  }
+
+  .faq__item:first-of-type {
+    border-top: 1px solid var(--vn-arena);
+  }
+
+  .faq__pregunta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq__pregunta::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__pregunta:hover {
+    color: var(--vn-granate);
+  }
+
+  /* Signo + que pasa a − al abrir */
+  .faq__signo {
+    position: relative;
+    flex: none;
+    width: 14px;
+    height: 14px;
+  }
+
+  .faq__signo::before,
+  .faq__signo::after {
+    content: '';
+    position: absolute;
+    background: var(--vn-rojo);
+  }
+
+  .faq__signo::before {
+    left: 0;
+    right: 0;
+    top: 6px;
+    height: 2px;
+  }
+
+  .faq__signo::after {
+    top: 0;
+    bottom: 0;
+    left: 6px;
+    width: 2px;
+  }
+
+  .faq__item[open] .faq__signo::after {
+    display: none;
+  }
+
+  .faq__respuesta {
+    margin: 0 0 1.25rem;
+    max-width: 44rem;
+  }
+</style>
