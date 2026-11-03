@@ -142,7 +142,9 @@ cp .env.example .env
 
 ## Despliegue
 
-Pendiente de decidir (Netlify, Vercel o GitHub Pages). La web no depende del alojamiento: basta con publicar `dist/`. Para desplegar en un subdirectorio (GitHub Pages), define estas variables al construir:
+La web se publica en el VPS de IONOS, junto a n8n, en `https://DOMINIO-DE-N8N/vega-norte/` y con usuario y contraseña. Se actualiza sola cada 10 minutos desde `main`. Instrucciones en [`despliegue/ionos/LEEME.md`](despliegue/ionos/LEEME.md).
+
+La web no depende del alojamiento: para cualquier otro basta con publicar `dist/`. Para desplegar en un subdirectorio, define estas variables al construir:
 
 ```bash
 SITE_URL=https://usuario.github.io BASE_PATH=/vega-norte-web npm run build

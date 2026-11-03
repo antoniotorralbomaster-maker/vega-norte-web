@@ -81,7 +81,6 @@ Cambio aplicado al texto: en `cuotas.md`, «Lo que no incluye: el pack de equipa
 
 ## Pendiente de decisión (no lo he decidido yo)
 
-- **Despliegue:** Netlify, Vercel o GitHub Pages.
 - **Texto público «llegará en la Fase 2»** en `categorias.md`.
 - **Columna «Plazas de portero»:** ¿los porteros están incluidos en las plazas o son aparte?
 - **Campo `campo`** de la crónica de ejemplo: no está en el esquema de noticias.
