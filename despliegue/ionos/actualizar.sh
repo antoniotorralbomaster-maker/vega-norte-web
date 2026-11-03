@@ -45,8 +45,12 @@ main() {
     envs+=(-e "$v=${!v:-}")
   done
 
+  # Opciones extra de Docker solo para entornos de prueba (p. ej. «--network host»).
+  local extra=()
+  [ -n "${OPCIONES_CONSTRUCCION:-}" ] && read -ra extra <<<"$OPCIONES_CONSTRUCCION"
+
   # Se construye dentro de un contenedor de Node: no hay que instalar nada en el servidor.
-  docker run --rm -v "$REPO:/app" -w /app "${envs[@]}" "${IMAGEN_NODE:-node:22-slim}" \
+  docker run --rm -v "$REPO:/app" -w /app "${envs[@]}" ${extra[@]+"${extra[@]}"} "${IMAGEN_NODE:-node:22-slim}" \
     sh -c "npm ci --no-audit --no-fund --loglevel=error && npm run build" >"$VN_DIR/ultima-construccion.log" 2>&1 || {
     echo "$(date '+%F %T') ERROR: la construcción ha fallado; la web publicada no cambia. Detalles en $VN_DIR/ultima-construccion.log" >&2
     exit 1
