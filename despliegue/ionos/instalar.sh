@@ -88,8 +88,8 @@ CONF
   local ruta
   ruta="$(grep -E '^RUTA_WEB=' "$CONFIG" | cut -d= -f2)"
   local codigo_web codigo_n8n
-  codigo_web="$(curl -sk -o /dev/null -w '%{http_code}' --retry 5 --retry-delay 2 --retry-all-errors "https://$dominio$ruta/" || true)"
-  codigo_n8n="$(curl -sk -o /dev/null -w '%{http_code}' "https://$dominio/" || true)"
+  codigo_web="$(curl -sk --noproxy "$dominio" -o /dev/null -w '%{http_code}' --retry 5 --retry-delay 2 --retry-all-errors "https://$dominio$ruta/" || true)"
+  codigo_n8n="$(curl -sk --noproxy "$dominio" -o /dev/null -w '%{http_code}' "https://$dominio/" || true)"
   echo
   if [ "$codigo_web" = 401 ]; then
     printf '\033[1;32mLISTO.\033[0m La web está en: https://%s%s/\n' "$dominio" "$ruta"

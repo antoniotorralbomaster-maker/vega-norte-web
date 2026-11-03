@@ -30,8 +30,10 @@ main() {
   local nuevo actual
   nuevo="$(git rev-parse "origin/$RAMA")"
   actual="$(cat "$VN_DIR/.publicado" 2>/dev/null || true)"
-  if [ "$nuevo" = "$actual" ] && [ "${1:-}" != "--forzar" ]; then
-    exit 0
+  if [ "${1:-}" != "--forzar" ]; then
+    [ "$nuevo" = "$actual" ] && exit 0
+    # Un commit que ya falló no se reintenta cada 10 minutos: espera al siguiente.
+    [ "$nuevo" = "$(cat "$VN_DIR/.fallido" 2>/dev/null || true)" ] && exit 0
   fi
 
   echo "$(date '+%F %T') Publicando ${nuevo:0:7} de la rama $RAMA…"
@@ -52,7 +54,8 @@ main() {
   # Se construye dentro de un contenedor de Node: no hay que instalar nada en el servidor.
   docker run --rm -v "$REPO:/app" -w /app "${envs[@]}" ${extra[@]+"${extra[@]}"} "${IMAGEN_NODE:-node:22-slim}" \
     sh -c "npm ci --no-audit --no-fund --loglevel=error && npm run build" >"$VN_DIR/ultima-construccion.log" 2>&1 || {
-    echo "$(date '+%F %T') ERROR: la construcción ha fallado; la web publicada no cambia. Detalles en $VN_DIR/ultima-construccion.log" >&2
+    echo "$nuevo" >"$VN_DIR/.fallido"
+    echo "$(date '+%F %T') ERROR: la construcción de ${nuevo:0:7} ha fallado; la web publicada no cambia. Detalles en $VN_DIR/ultima-construccion.log" >&2
     exit 1
   }
 
@@ -63,6 +66,7 @@ main() {
   find "$SITIO" -mindepth 1 -delete
   cp -a "$REPO/dist/." "$SITIO/"
   echo "$nuevo" >"$VN_DIR/.publicado"
+  rm -f "$VN_DIR/.fallido"
   echo "$(date '+%F %T') Publicado ${nuevo:0:7}."
 }
 
