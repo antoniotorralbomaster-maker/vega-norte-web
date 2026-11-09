@@ -6,6 +6,14 @@ import Pie from '../components/Pie.astro';
 import AvisoCookies from '../components/AvisoCookies.astro';
 import { club } from '../lib/datos';
 
+// Favicon: versión reducida del escudo (manual: por debajo de 64 px se usa la reducida).
+const iconos = import.meta.glob<string>('../assets/escudo/vega-norte-escudo-reducido-principal.svg', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+const favicon = Object.values(iconos)[0];
+
 interface Props {
   titulo: string;
   descripcion?: string;
@@ -27,6 +35,7 @@ const canonica = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={descripcion} />
     <link rel="canonical" href={canonica} />
     <!-- La web no es pública: se enseña solo en la presentación del TFM. -->
+    {favicon && <link rel="icon" type="image/svg+xml" href={favicon} />}
     <meta name="robots" content="noindex, nofollow" />
     <meta property="og:title" content={tituloPestana} />
     <meta property="og:description" content={descripcion} />

@@ -1,16 +1,21 @@
 ---
-// Escudo del club. ÚNICO punto de sustitución de vega-norte-escudo-*.svg.
+// Escudo «Brote» del club. ÚNICO punto de sustitución de vega-norte-escudo-*.svg.
+// Nombres de fichero según el Manual de identidad v1.0:
+//   vega-norte-escudo-[completo|reducido]-[principal|sobre-fondo-rojo|una-tinta].svg
+// Regla del manual: por debajo de 64 px de alto se usa siempre la versión reducida.
 // Si src/assets/escudo/ no contiene ningún SVG, se muestra el marcador de texto.
 import { club } from '../lib/datos';
 
 interface Props {
-  /** 'color' para fondos claros, 'blanco' para fondos rojo o granate */
+  /** 'color' para fondos claros (principal); 'blanco' para fondos rojo o granate (sobre fondo rojo) */
   tono?: 'color' | 'blanco';
-  /** Altura del escudo en px cuando existe el SVG */
+  /** Altura del escudo en px. Por debajo de 64 se usa la versión reducida */
   alto?: number;
+  /** Muestra «AD VEGA NORTE» junto al escudo (cabecera del manual, sección 6) */
+  conNombre?: boolean;
 }
 
-const { tono = 'color', alto = 48 } = Astro.props;
+const { tono = 'color', alto = 48, conNombre = false } = Astro.props;
 
 const ficheros = import.meta.glob<string>('../assets/escudo/vega-norte-escudo-*.svg', {
   eager: true,
@@ -18,23 +23,40 @@ const ficheros = import.meta.glob<string>('../assets/escudo/vega-norte-escudo-*.
   import: 'default',
 });
 const rutas = Object.entries(ficheros);
-const elegido =
-  rutas.find(([n]) => n.includes(`-${tono}`)) ?? rutas.find(([n]) => n.includes('-color')) ?? rutas[0];
+const tamano = alto < 64 ? 'reducido' : 'completo';
+const color = tono === 'blanco' ? 'sobre-fondo-rojo' : 'principal';
+const buscar = (t: string, c: string) => rutas.find(([n]) => n.endsWith(`escudo-${t}-${c}.svg`));
+const elegido = buscar(tamano, color) ?? buscar(tamano, 'principal') ?? rutas[0];
 const svg = elegido?.[1];
 const nombre = club.club.nombre;
+const ancho = Math.round((alto * 5) / 6);
 ---
 
 {
   svg ? (
-    <img class="escudo" src={svg} alt={nombre} height={alto} style={`height:${alto}px;width:auto`} />
-  ) : (
-    <span class={`escudo-marcador escudo-marcador--${tono}`}>
-      {nombre}
+    <span class="escudo-marca">
+      <img
+        class="escudo"
+        src={svg}
+        alt={conNombre ? '' : nombre}
+        width={ancho}
+        height={alto}
+        style={`height:${alto}px;width:auto`}
+      />
+      {conNombre && <span class={`escudo-marcador escudo-marcador--${tono}`}>{nombre}</span>}
     </span>
+  ) : (
+    <span class={`escudo-marcador escudo-marcador--${tono}`}>{nombre}</span>
   )
 }
 
 <style>
+  .escudo-marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
   .escudo {
     display: block;
     border-radius: 0;
@@ -57,5 +79,12 @@ const nombre = club.club.nombre;
 
   .escudo-marcador--blanco {
     color: var(--vn-blanco);
+  }
+
+  @media (max-width: 400px) {
+    .escudo-marcador {
+      font-size: 20px;
+      line-height: 28px;
+    }
   }
 </style>
