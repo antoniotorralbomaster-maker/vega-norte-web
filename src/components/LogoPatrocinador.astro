@@ -1,0 +1,51 @@
+---
+// Logo de un patrocinador: busca src/assets/patrocinadores/<nombre>-<tono>.svg y, si no existe,
+// muestra el nombre en texto. El <nombre> sale del patrocinador de datos/club.json (ver LEEME.md).
+interface Props {
+  nombre: string;
+  /** 'blanco' sobre rojo o fondos de color; 'una-tinta' sobre fondos claros */
+  tono?: 'blanco' | 'una-tinta';
+  /** Altura en px */
+  alto?: number;
+  /** Texto alternativo; vacío si el nombre ya aparece al lado */
+  alt?: string;
+}
+
+const { nombre, tono = 'una-tinta', alto = 48, alt = nombre } = Astro.props;
+
+const slug = nombre
+  .split('·')[0]
+  .trim()
+  .normalize('NFD')
+  .replace(/[̀-ͯ]/g, '')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '');
+
+const ficheros = import.meta.glob<string>('../assets/patrocinadores/*.svg', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+const entrada = Object.entries(ficheros).find(([ruta]) => ruta.endsWith(`/${slug}-${tono}.svg`));
+const svg = entrada?.[1];
+---
+
+{
+  svg ? (
+    <img class="logo-patrocinador" src={svg} alt={alt} height={alto} style={`height:${alto}px;width:auto`} />
+  ) : (
+    <span class="logo-patrocinador__texto">{nombre}</span>
+  )
+}
+
+<style>
+  .logo-patrocinador {
+    display: block;
+    max-width: 100%;
+  }
+
+  .logo-patrocinador__texto {
+    font-weight: 600;
+  }
+</style>

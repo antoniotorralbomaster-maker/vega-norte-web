@@ -1,6 +1,7 @@
 ---
 // Patrocinadores (bloque 6): todos los de datos/club.json, el principal primero.
 // Mientras no haya logos, se muestra el nombre como marcador.
+import LogoPatrocinador from './LogoPatrocinador.astro';
 import { patrocinadoresFranja, club } from '../lib/datos';
 import { url } from '../lib/url';
 import type { Enlace } from '../lib/secciones';
@@ -18,7 +19,7 @@ const patrocinadores = patrocinadoresFranja(club.patrocinadores.length);
     patrocinadores.map((p) => (
       <li class:list={['patro__item', { 'patro__item--principal': p.nivel === 'Principal' }]}>
         <span class="patro__nivel texto-pequeno">{p.nivel}</span>
-        <span class="patro__nombre">{p.nombre}</span>
+        <span class="patro__nombre"><LogoPatrocinador nombre={p.nombre} alto={p.nivel === 'Principal' ? 64 : 48} /></span>
         <span class="patro__desc texto-pequeno">{p.descripcion}</span>
       </li>
     ))
