@@ -1,0 +1,91 @@
+---
+// Patrocinadores (bloque 6): todos los de datos/club.json, el principal primero.
+// Mientras no haya logos, se muestra el nombre como marcador.
+import { patrocinadoresFranja, club } from '../lib/datos';
+import { url } from '../lib/url';
+import type { Enlace } from '../lib/secciones';
+
+interface Props {
+  enlace?: Enlace;
+}
+
+const { enlace } = Astro.props;
+const patrocinadores = patrocinadoresFranja(club.patrocinadores.length);
+---
+
+<ul class="patro">
+  {
+    patrocinadores.map((p) => (
+      <li class:list={['patro__item', { 'patro__item--principal': p.nivel === 'Principal' }]}>
+        <span class="patro__nivel texto-pequeno">{p.nivel}</span>
+        <span class="patro__nombre">{p.nombre}</span>
+        <span class="patro__desc texto-pequeno">{p.descripcion}</span>
+      </li>
+    ))
+  }
+</ul>
+{
+  enlace && (
+    <p class="patro__accion">
+      <a class="boton boton--secundario" href={url(enlace.ruta)}>
+        {enlace.texto}
+      </a>
+    </p>
+  )
+}
+
+<style>
+  .patro {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 600px) {
+    .patro {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .patro__item--principal {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .patro__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.25rem;
+    background: var(--vn-blanco);
+    border: 1px solid var(--vn-arena);
+    border-radius: 4px;
+  }
+
+  .patro__item--principal {
+    border: 2px solid var(--vn-rojo);
+  }
+
+  .patro__nivel {
+    color: var(--vn-gris);
+  }
+
+  .patro__nombre {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: var(--vn-carbon);
+  }
+
+  .patro__item--principal .patro__nombre {
+    font-size: 24px;
+    line-height: 32px;
+    color: var(--vn-granate);
+  }
+
+  .patro__accion {
+    margin: 1.5rem 0 0;
+  }
+</style>

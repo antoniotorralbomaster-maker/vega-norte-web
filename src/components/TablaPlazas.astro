@@ -1,0 +1,49 @@
+---
+// Tabla de plazas disponibles (bloques 13 y 14). Lee `plazas_ejemplo` de datos/club.json.
+// Se puede filtrar por público; muestra siempre la fecha de actualización.
+import { club } from '../lib/datos';
+import { nombresDe, type Publico } from '../lib/categorias';
+import { fecha, fechaIso } from '../lib/formato';
+
+interface Props {
+  publico?: Publico;
+  /** Pie de la tabla; «[fecha]» se sustituye por la fecha de actualización */
+  pie?: string;
+}
+
+const { publico, pie = 'Datos actualizados el [fecha].' } = Astro.props;
+const [antes, despues = ''] = pie.split('[fecha]');
+const { actualizado, items } = club.plazas_ejemplo;
+const permitidas = publico ? new Set(nombresDe(publico)) : null;
+const filas = permitidas ? items.filter((i) => permitidas.has(i.categoria)) : items;
+---
+
+<figure class="tabla-figura">
+<div class="tabla-marco" role="region" aria-label="Plazas disponibles" tabindex="0">
+  <table class="tabla tabla--compacta">
+    <thead>
+      <tr>
+        <th scope="col">Categoría</th>
+        <th scope="col">Años de nacimiento</th>
+        <th scope="col" class="num">Plazas</th>
+        <th scope="col" class="num">Plazas de portero</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        filas.map((i) => (
+          <tr>
+            <th scope="row">{i.categoria}</th>
+            <td>{i.nacidos}</td>
+            <td class="num">{i.plazas}</td>
+            <td class="num">{i.porteros}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+  <figcaption>
+    {antes}{pie.includes('[fecha]') && <time datetime={fechaIso(actualizado)}>{fecha(actualizado)}</time>}{despues}
+  </figcaption>
+</figure>

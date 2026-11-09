@@ -1,0 +1,75 @@
+---
+// Aviso de cookies preparado pero DESACTIVADO (ver src/lib/config.ts).
+// Mientras COOKIES_NO_NECESARIAS sea false, no se genera nada en el HTML.
+// Guarda la elección en la cookie «preferencia_cookies» durante 12 meses,
+// como indica contenido/paginas/legal/cookies.md.
+import { COOKIES_NO_NECESARIAS } from '../lib/config';
+import { url } from '../lib/url';
+---
+
+{
+  COOKIES_NO_NECESARIAS && (
+    <div class="aviso-cookies" role="region" aria-label="Aviso de cookies" hidden>
+      <div class="contenedor aviso-cookies__interior">
+        <p class="aviso-cookies__texto">
+          Usamos cookies técnicas y, solo si lo aceptas, cookies de analítica. Puedes leer los detalles en
+          nuestra <a href={url('/legal/cookies')}>política de cookies</a>.
+        </p>
+        <div class="aviso-cookies__botones">
+          <button class="boton" type="button" data-cookies="aceptar">
+            Aceptar
+          </button>
+          <button class="boton boton--secundario" type="button" data-cookies="rechazar">
+            Rechazar
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  const aviso = document.querySelector<HTMLElement>('.aviso-cookies');
+  const NOMBRE = 'preferencia_cookies';
+  if (aviso && !document.cookie.split('; ').some((c) => c.startsWith(NOMBRE + '='))) {
+    aviso.hidden = false;
+    aviso.querySelectorAll<HTMLButtonElement>('[data-cookies]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const valor = b.dataset.cookies;
+        document.cookie = `${NOMBRE}=${valor}; max-age=${60 * 60 * 24 * 365}; path=/; SameSite=Lax`;
+        aviso.hidden = true;
+        document.dispatchEvent(new CustomEvent('vn:cookies', { detail: valor }));
+      }),
+    );
+  }
+</script>
+
+<style>
+  .aviso-cookies {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 50;
+    background: var(--vn-blanco);
+    border-top: 4px solid var(--vn-granate);
+    box-shadow: 0 -4px 16px color-mix(in srgb, var(--vn-carbon) 18%, transparent);
+  }
+
+  .aviso-cookies__interior {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1rem;
+  }
+
+  .aviso-cookies__texto {
+    margin: 0;
+    flex: 1 1 20rem;
+  }
+
+  .aviso-cookies__botones {
+    display: flex;
+    gap: 0.75rem;
+  }
+</style>

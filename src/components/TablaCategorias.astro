@@ -1,0 +1,57 @@
+---
+// Tabla de categorías (bloque 11). Lee `categorias` de datos/club.json.
+// Cada fila enlaza a la página de su público (familias o jugadores).
+import { club } from '../lib/datos';
+import { publicoDe, rutaPublico } from '../lib/categorias';
+import { url } from '../lib/url';
+
+interface Props {
+  /** Nota al pie de la tabla (texto de la página) */
+  nota?: string;
+}
+
+const { nota } = Astro.props;
+const categorias = club.categorias;
+const total = categorias.reduce((s, c) => s + c.equipos, 0);
+---
+
+<figure class="tabla-figura">
+<div class="tabla-marco" role="region" aria-label="Categorías y equipos" tabindex="0">
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th scope="col">Categoría</th>
+        <th scope="col">Edad</th>
+        <th scope="col">Años de nacimiento</th>
+        <th scope="col" class="num">Equipos</th>
+        <th scope="col">Formato de juego</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        categorias.map((c) => (
+          <tr>
+            <th scope="row">
+              <a href={url(rutaPublico[publicoDe(c)])}>{c.nombre}</a>
+            </th>
+            <td>{c.edad}</td>
+            <td>{c.nacidos}</td>
+            <td class="num">{c.equipos}</td>
+            <td>{c.formato}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+    <tfoot>
+      <tr>
+        <th scope="row">Total</th>
+        <td></td>
+        <td></td>
+        <td class="num">{total}</td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+  {nota && <figcaption>{nota}</figcaption>}
+</figure>

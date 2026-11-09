@@ -1,0 +1,24 @@
+---
+// Tarjeta destacada con un texto breve (p. ej. «¿No encuentras tu duda?…»).
+interface Props {
+  html: string;
+}
+
+const { html } = Astro.props;
+---
+
+<aside class="aviso sobre-arena"><Fragment set:html={html} /></aside>
+
+<style>
+  .aviso {
+    margin-block: 2.5rem 1rem;
+    padding: 1.25rem 1.5rem;
+    border-left: 6px solid var(--vn-granate);
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .aviso :global(p) {
+    margin: 0;
+  }
+</style>

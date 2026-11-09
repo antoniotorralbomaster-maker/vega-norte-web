@@ -1,0 +1,395 @@
+/* Estilos globales de AD Vega Norte.
+   Solo usa variables de diseno/tokens.css (Manual de identidad v1.0).
+   No añadas aquí colores, fuentes ni tamaños de letra propios. */
+@import '../../diseno/tokens.css';
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 1rem;
+}
+
+body {
+  margin: 0;
+  min-width: 360px;
+  font: var(--vn-texto);
+  color: var(--vn-carbon);
+  background: var(--vn-blanco);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  /* Evita que una tabla ancha estire la página en móvil */
+  min-width: 0;
+  width: 100%;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fotos e ilustraciones de contenido: esquinas de 16 px */
+.foto,
+main img {
+  border-radius: var(--vn-radio-foto);
+}
+
+/* ---------- Titulares: Oswald, mayúsculas por CSS, +1 % de espaciado ---------- */
+h1,
+h2,
+h3,
+.titular {
+  font-family: var(--vn-fuente-titulo);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--vn-granate);
+  margin: 0 0 0.5em;
+  overflow-wrap: break-word;
+}
+
+h1 {
+  font: var(--vn-h1);
+  letter-spacing: 0.01em;
+}
+
+h2 {
+  font: var(--vn-h2);
+  letter-spacing: 0.01em;
+}
+
+h3 {
+  font: var(--vn-h3);
+  letter-spacing: 0.01em;
+}
+
+/* Sobre fondo rojo o granate, titulares en blanco */
+.sobre-rojo :is(h1, h2, h3, .titular),
+.sobre-granate :is(h1, h2, h3, .titular) {
+  color: var(--vn-blanco);
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 1em;
+}
+
+.texto-pequeno,
+small {
+  font: var(--vn-texto-pequeno);
+}
+
+/* ---------- Enlaces y foco ---------- */
+a {
+  color: var(--vn-granate);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--vn-rojo);
+}
+
+:focus-visible {
+  outline: 3px solid var(--vn-carbon);
+  outline-offset: 2px;
+}
+
+.sobre-rojo :focus-visible,
+.sobre-granate :focus-visible {
+  outline-color: var(--vn-blanco);
+}
+
+.sobre-rojo {
+  background: var(--vn-rojo);
+  color: var(--vn-blanco);
+}
+
+.sobre-granate {
+  background: var(--vn-granate);
+  color: var(--vn-blanco);
+}
+
+.sobre-rojo a,
+.sobre-granate a {
+  color: var(--vn-blanco);
+}
+
+.sobre-arena {
+  background: var(--vn-arena);
+}
+
+/* ---------- Utilidades ---------- */
+.contenedor {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+.seccion {
+  padding-block: 3rem;
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.saltar {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: var(--vn-carbon);
+  color: var(--vn-blanco);
+  font-weight: 600;
+}
+
+.saltar:focus {
+  top: 8px;
+  color: var(--vn-blanco);
+}
+
+/* ---------- Botones ---------- */
+.boton {
+  display: inline-block;
+  padding: 0.625rem 1.25rem;
+  border: 2px solid var(--vn-rojo);
+  border-radius: 4px;
+  background: var(--vn-rojo);
+  color: var(--vn-blanco);
+  font-family: var(--vn-fuente-texto);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.boton:hover {
+  background: var(--vn-granate);
+  border-color: var(--vn-granate);
+  color: var(--vn-blanco);
+}
+
+.boton--secundario {
+  background: var(--vn-blanco);
+  color: var(--vn-rojo);
+}
+
+.boton--secundario:hover {
+  background: var(--vn-arena);
+  border-color: var(--vn-granate);
+  color: var(--vn-granate);
+}
+
+.sobre-rojo .boton {
+  background: var(--vn-blanco);
+  border-color: var(--vn-blanco);
+  color: var(--vn-rojo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ---------- Tablas de datos ---------- */
+/* El contenedor permite desplazar la tabla en horizontal en pantallas
+   estrechas sin que se desplace la página entera. */
+.tabla-marco {
+  position: relative; /* contiene los textos .solo-lectores de la tabla */
+  overflow-x: auto;
+  margin-block: 1.5rem;
+  border-radius: 4px;
+}
+
+.tabla {
+  width: 100%;
+  min-width: 32rem;
+  border-collapse: collapse;
+  font: var(--vn-texto);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.tabla-figura {
+  margin: 1.5rem 0;
+}
+
+.tabla-figura > .tabla-marco {
+  margin: 0;
+}
+
+.tabla-figura figcaption {
+  padding-top: 0.75rem;
+  font: var(--vn-texto-pequeno);
+  color: var(--vn-gris);
+}
+
+
+
+.tabla th,
+.tabla td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--vn-arena);
+}
+
+.tabla thead th {
+  background: var(--vn-granate);
+  color: var(--vn-blanco);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tabla tbody tr:nth-child(even) {
+  background: var(--vn-arena);
+}
+
+.tabla tbody th {
+  font-weight: 600;
+}
+
+.tabla tfoot td,
+.tabla tfoot th {
+  font-weight: 600;
+  border-top: 2px solid var(--vn-granate);
+  border-bottom: 0;
+}
+
+.tabla .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Botón de contorno blanco, para fondos rojo o granate */
+.sobre-rojo .boton--contorno,
+.sobre-granate .boton--contorno {
+  background: transparent;
+  border-color: var(--vn-blanco);
+  color: var(--vn-blanco);
+}
+
+.sobre-rojo .boton--contorno:hover,
+.sobre-granate .boton--contorno:hover {
+  background: var(--vn-granate);
+  border-color: var(--vn-blanco);
+  color: var(--vn-blanco);
+}
+
+.sobre-rojo .boton:not(.boton--contorno):hover {
+  background: var(--vn-arena);
+  border-color: var(--vn-arena);
+  color: var(--vn-granate);
+}
+
+/* Cabecera de sección con enlace a la derecha */
+.seccion__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.seccion__cabecera > :is(h2, h3) {
+  margin: 0;
+}
+
+.rejilla-3 {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .rejilla-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .rejilla-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tabla--estrecha {
+  min-width: 0;
+  max-width: 40rem;
+}
+
+/* ---------- Texto largo de las páginas de contenido ---------- */
+.prosa > :where(p, ul, ol, h2, h3, aside, .formulario-pendiente),
+.prosa > :where(div:not(.tabla-marco)) {
+  max-width: 46rem;
+}
+
+.prosa h2 {
+  margin-top: 2.5rem;
+}
+
+.prosa > h2:first-child {
+  margin-top: 0;
+}
+
+.prosa li {
+  margin-bottom: 0.5rem;
+}
+
+.prosa li::marker {
+  color: var(--vn-rojo);
+}
+
+.prosa strong {
+  font-weight: 600;
+}
+
+/* Tablas de pocas columnas: se ajustan al ancho sin desplazamiento */
+.tabla.tabla--compacta {
+  min-width: 0;
+}
+
+.tabla.tabla--compacta thead th {
+  white-space: normal;
+}
+
+@media (max-width: 599px) {
+  .tabla th,
+  .tabla td {
+    padding: 0.625rem 0.5rem;
+  }
+
+  /* En móvil, las tablas compactas usan el texto pequeño de la escala (14/20) */
+  .tabla.tabla--compacta {
+    font: var(--vn-texto-pequeno);
+  }
+}

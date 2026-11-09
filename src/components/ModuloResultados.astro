@@ -1,0 +1,93 @@
+---
+// Resultados y horarios de la jornada (bloque 5).
+// En esta fase es un MARCADOR DE POSICIÓN: sin partidos muestra el aviso.
+// Más adelante lo alimentará n8n desde el repositorio de resultados (bloque 22).
+// La forma de `Partido` es provisional y se ajustará a ese repositorio.
+// Los colores de resultado (victoria, empate, derrota) solo se usan aquí y en tablas.
+import { fecha, fechaIso } from '../lib/formato';
+
+export interface Partido {
+  fecha: string;
+  hora?: string;
+  equipo: string;
+  rival: string;
+  local: boolean;
+  marcador?: string;
+  resultado?: 'victoria' | 'empate' | 'derrota';
+}
+
+interface Props {
+  aviso: string;
+  partidos?: Partido[];
+}
+
+const { aviso, partidos = [] } = Astro.props;
+const textoResultado = { victoria: 'Victoria', empate: 'Empate', derrota: 'Derrota' } as const;
+---
+
+{
+  partidos.length === 0 ? (
+    <p class="resultados__aviso">{aviso}</p>
+  ) : (
+    <div class="tabla-marco" role="region" aria-label="Partidos de la jornada" tabindex="0">
+      <table class="tabla resultados">
+        <thead>
+          <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Partido</th>
+            <th scope="col" class="num">Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {partidos.map((p) => (
+            <tr>
+              <td>
+                <time datetime={fechaIso(p.fecha)}>{fecha(p.fecha)}</time>
+                {p.hora && `, ${p.hora}`}
+              </td>
+              <th scope="row">{p.local ? `${p.equipo} - ${p.rival}` : `${p.rival} - ${p.equipo}`}</th>
+              <td class="num">
+                {p.marcador ? (
+                  <span class={`resultados__marcador resultados__marcador--${p.resultado ?? 'pendiente'}`}>
+                    {p.marcador}
+                    {p.resultado && <span class="solo-lectores">, {textoResultado[p.resultado]}</span>}
+                  </span>
+                ) : (
+                  'Por jugar'
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+<style>
+  .resultados__aviso {
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    border: 1px dashed var(--vn-gris);
+    border-radius: 4px;
+    color: var(--vn-gris);
+  }
+
+  /* Colores de resultado como texto de 24 px (requisito de contraste del manual) */
+  .resultados__marcador {
+    font: var(--vn-h3);
+    letter-spacing: 0.01em;
+  }
+
+  .resultados__marcador--victoria {
+    color: var(--vn-victoria);
+  }
+
+  .resultados__marcador--empate {
+    color: var(--vn-empate);
+  }
+
+  .resultados__marcador--derrota {
+    color: var(--vn-derrota);
+  }
+</style>

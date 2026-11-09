@@ -1,0 +1,77 @@
+---
+// Cifras del club (bloque 3). Recibe frases como «unos 700 jugadores» (ya resueltas
+// desde datos/club.json) y destaca el número: prefijo pequeño, cifra grande y texto.
+interface Props {
+  cifras: string[];
+  pie?: string;
+}
+
+const { cifras, pie } = Astro.props;
+
+const partes = cifras.map((frase) => {
+  const m = frase.match(/^(.*?)(\d[\d.]*)(.*)$/);
+  if (!m) return { antes: '', cifra: frase, despues: '' };
+  return { antes: m[1].trim(), cifra: m[2], despues: m[3].replace(/^[,\s]+/, '').trim() };
+});
+---
+
+<div class="cifras">
+  <ul class="cifras__lista">
+    {
+      partes.map((p) => (
+        <li class="cifras__item">
+          <span class="cifras__antes">{p.antes || '\u00a0'}</span>
+          <span class="cifras__numero">{p.cifra}</span>
+          {p.despues && <span class="cifras__texto">{p.despues}</span>}
+        </li>
+      ))
+    }
+  </ul>
+  {pie && <p class="cifras__pie">{pie}</p>}
+</div>
+
+<style>
+  .cifras__lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+  }
+
+  @media (min-width: 900px) {
+    .cifras__lista {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .cifras__item {
+    display: flex;
+    flex-direction: column;
+    border-top: 4px solid var(--vn-rojo);
+    padding-top: 0.75rem;
+  }
+
+  .cifras__antes,
+  .cifras__texto {
+    font: var(--vn-texto-pequeno);
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .cifras__antes {
+    color: var(--vn-gris);
+  }
+
+  .cifras__numero {
+    font: var(--vn-h1);
+    letter-spacing: 0.01em;
+    color: var(--vn-granate);
+  }
+
+  .cifras__pie {
+    margin: 2rem 0 0;
+    font-weight: 600;
+  }
+</style>

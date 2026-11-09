@@ -1,0 +1,171 @@
+---
+// Portada (bloques 1-6). Todos los textos salen de contenido/paginas/inicio.md
+// y las cifras de datos/club.json.
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Ilustracion from '../components/Ilustracion.astro';
+import TarjetasVenAJugar, { type TarjetaVenAJugar } from '../components/TarjetasVenAJugar.astro';
+import CifrasClub from '../components/CifrasClub.astro';
+import TarjetaNoticia from '../components/TarjetaNoticia.astro';
+import ModuloResultados from '../components/ModuloResultados.astro';
+import SeccionPatrocinadores from '../components/SeccionPatrocinadores.astro';
+import { club } from '../lib/datos';
+import { noticiasOrdenadas } from '../lib/noticias';
+import { seccionesPorBloque, bloque, campo, cita, enlaces, lista, conDatos } from '../lib/secciones';
+import { url } from '../lib/url';
+
+const FICHERO = 'contenido/paginas/inicio.md';
+const inicio = await getEntry('paginas', 'inicio');
+if (!inicio?.body) throw new Error(`Falta ${FICHERO}`);
+const secciones = seccionesPorBloque(inicio.body);
+const b = (n: number) => bloque(secciones, n, FICHERO);
+
+// Bloque 1: cabecera
+const b1 = b(1);
+const titular = campo(b1.cuerpo, 'Titular', FICHERO);
+const entradilla = campo(b1.cuerpo, 'Entradilla', FICHERO);
+const ANCLA_VEN_A_JUGAR = 'ven-a-jugar';
+const botones = [...campo(b1.cuerpo, 'Botones', FICHERO).matchAll(/«([^»]+)»\s*\(lleva (?:a|al) ([^)]+)\)/g)].map(
+  ([, texto, destino]) => ({ texto, ruta: destino.startsWith('/') ? url(destino) : `#${ANCLA_VEN_A_JUGAR}` }),
+);
+
+// Bloque 2: dos entradas «Ven a jugar»
+const b2 = b(2);
+const tarjetas: TarjetaVenAJugar[] = b2.cuerpo
+  .split(/^(?=\*\*Tarjeta)/m)
+  .filter((t) => t.startsWith('**Tarjeta'))
+  .map((t) => {
+    const boton = enlaces(t)[0];
+    if (!boton) throw new Error(`${FICHERO}: una tarjeta del bloque 2 no tiene botón`);
+    return {
+      publico: /jugadores/i.test(t.split('\n')[0]) ? 'jugadores' : 'familias',
+      titular: cita(t, 'Titular', FICHERO),
+      texto: cita(t, 'Texto', FICHERO),
+      boton,
+    };
+  });
+
+// Bloque 3: cifras
+const b3 = b(3);
+const cifras = lista(b3.cuerpo).map((frase) => conDatos(frase, club, FICHERO));
+const pieCifras = cita(b3.cuerpo, 'Pie', FICHERO);
+
+// Bloque 4: últimas noticias
+const b4 = b(4);
+const ultimas = (await noticiasOrdenadas()).slice(0, 3);
+const verTodas = enlaces(b4.cuerpo)[0];
+
+// Bloque 5: resultados (marcador de posición)
+const b5 = b(5);
+const avisoResultados = cita(b5.cuerpo, 'aviso discreto', FICHERO);
+
+// Bloque 6: patrocinadores
+const b6 = b(6);
+const hazte = enlaces(b6.cuerpo)[0];
+---
+
+<Base titulo={inicio.data.titulo} descripcion={inicio.data.descripcion} portada>
+  <section class="portada sobre-rojo">
+    <div class="contenedor portada__interior">
+      <div class="portada__texto">
+        <h1 class="portada__titular">{titular}</h1>
+        <p class="portada__entradilla">{entradilla}</p>
+        <p class="portada__botones">
+          {
+            botones.map((bt, i) => (
+              <a class:list={['boton', { 'boton--contorno': i > 0 }]} href={bt.ruta}>
+                {bt.texto}
+              </a>
+            ))
+          }
+        </p>
+      </div>
+      <div class="portada__ilustracion">
+        <Ilustracion motivo="campo" />
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion" id={ANCLA_VEN_A_JUGAR} aria-labelledby="t-ven-a-jugar">
+    <div class="contenedor">
+      <h2 id="t-ven-a-jugar">{b2.titulo}</h2>
+      <TarjetasVenAJugar tarjetas={tarjetas} />
+    </div>
+  </section>
+
+  <section class="seccion sobre-arena" aria-labelledby="t-cifras">
+    <div class="contenedor">
+      <h2 id="t-cifras">{b3.titulo}</h2>
+      <CifrasClub cifras={cifras} pie={pieCifras} />
+    </div>
+  </section>
+
+  <section class="seccion" aria-labelledby="t-noticias">
+    <div class="contenedor">
+      <div class="seccion__cabecera">
+        <h2 id="t-noticias">{b4.titulo}</h2>
+        {verTodas && <a href={url(verTodas.ruta)}>{verTodas.texto}</a>}
+      </div>
+      <ul class="rejilla-3">
+        {
+          ultimas.map((n) => (
+            <li>
+              <TarjetaNoticia noticia={n} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="seccion sobre-arena" aria-labelledby="t-resultados">
+    <div class="contenedor">
+      <h2 id="t-resultados">{b5.titulo}</h2>
+      <ModuloResultados aviso={avisoResultados} />
+    </div>
+  </section>
+
+  <section class="seccion" aria-labelledby="t-patrocinadores">
+    <div class="contenedor">
+      <h2 id="t-patrocinadores">{b6.titulo}</h2>
+      <SeccionPatrocinadores enlace={hazte} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .portada__interior {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    padding-block: 3rem;
+  }
+
+  @media (min-width: 900px) {
+    .portada__interior {
+      grid-template-columns: 3fr 2fr;
+      padding-block: 4.5rem;
+    }
+  }
+
+  .portada__entradilla {
+    max-width: 38rem;
+  }
+
+  .portada__botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.5rem 0 0;
+  }
+
+  .portada__ilustracion {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .portada__ilustracion {
+      display: block;
+    }
+  }
+</style>

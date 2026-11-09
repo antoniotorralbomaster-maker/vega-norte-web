@@ -1,0 +1,121 @@
+---
+// Páginas de contenido: una por cada fichero de contenido/paginas con su `slug`.
+// Una página nueva con cabecera y slug se publica sola al reconstruir.
+// Quedan fuera la portada (index.astro) y Noticias (bloque de noticias).
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import TablaCategorias from '../components/TablaCategorias.astro';
+import TablaCuotas from '../components/TablaCuotas.astro';
+import TablaPlazas from '../components/TablaPlazas.astro';
+import TablaDirectiva from '../components/TablaDirectiva.astro';
+import TarjetasValores from '../components/TarjetasValores.astro';
+import TarjetaReglaImagenes from '../components/TarjetaReglaImagenes.astro';
+import AcordeonFAQ from '../components/AcordeonFAQ.astro';
+import ResumenCampus from '../components/ResumenCampus.astro';
+import TarjetaAviso from '../components/TarjetaAviso.astro';
+import BotonDocumento from '../components/BotonDocumento.astro';
+import Ilustracion from '../components/Ilustracion.astro';
+import Formulario from '../components/Formulario.astro';
+import { interpretar } from '../lib/contenido';
+
+const PROPIAS = new Set(['/', '/noticias']);
+
+export async function getStaticPaths() {
+  const paginas = await getCollection('paginas');
+  return paginas
+    .filter((p) => !['/', '/noticias'].includes(p.data.slug))
+    .map((pagina) => ({ params: { ruta: pagina.data.slug.replace(/^\//, '') }, props: { pagina } }));
+}
+
+interface Props {
+  pagina: CollectionEntry<'paginas'>;
+}
+
+const { pagina } = Astro.props;
+if (PROPIAS.has(pagina.data.slug)) throw new Error('Ruta reservada');
+const fichero = `contenido/paginas/${pagina.id}.md`;
+const { titular, entradilla, trozos } = interpretar(pagina.body ?? '', fichero);
+const { seccion } = pagina.data;
+---
+
+<Base titulo={pagina.data.titulo} descripcion={pagina.data.descripcion}>
+  <header class="pagina__cabecera sobre-arena">
+    <div class="contenedor">
+      {seccion !== pagina.data.titulo && <p class="pagina__seccion texto-pequeno">{seccion}</p>}
+      <h1>{titular}</h1>
+      {entradilla && <div class="pagina__entradilla" set:html={entradilla} />}
+    </div>
+  </header>
+
+  <div class="contenedor pagina__cuerpo prosa">
+    {
+      trozos.map((t) => {
+        if (!('componente' in t)) return <Fragment set:html={t.html} />;
+        switch (t.componente) {
+          case 'tabla-categorias':
+            return <TablaCategorias nota={t.nota} />;
+          case 'tabla-cuotas':
+            return <TablaCuotas nota={t.nota} />;
+          case 'tabla-plazas':
+            return <TablaPlazas publico={t.publico} pie={t.pie} />;
+          case 'tabla-directiva':
+            return <TablaDirectiva pie={t.pie} />;
+          case 'valores':
+            return <TarjetasValores seNota={t.seNota} />;
+          case 'regla-imagenes':
+            return <TarjetaReglaImagenes titulo={t.titulo} nivel={3} />;
+          case 'faq':
+            return <AcordeonFAQ />;
+          case 'resumen-campus':
+            return <ResumenCampus />;
+          case 'tarjeta':
+            return <TarjetaAviso html={t.contenido} />;
+          case 'boton-documento':
+            return <BotonDocumento texto={t.texto} fichero="protocolo-proteccion.pdf" />;
+          case 'mapa':
+            return (
+              <div class="pagina__mapa">
+                <Ilustracion motivo="mapa" />
+              </div>
+            );
+          case 'formulario':
+            return <Formulario id={t.id} ayuda={t.ayuda} />;
+        }
+      })
+    }
+  </div>
+</Base>
+
+<style>
+  .pagina__cabecera {
+    padding-block: 2.5rem 2rem;
+    border-bottom: 4px solid var(--vn-rojo);
+  }
+
+  .pagina__cabecera h1 {
+    margin-bottom: 0.75rem;
+  }
+
+  .pagina__seccion {
+    margin: 0 0 0.5rem;
+    color: var(--vn-gris);
+    font-weight: 600;
+  }
+
+  .pagina__entradilla {
+    max-width: 46rem;
+  }
+
+  .pagina__entradilla :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .pagina__cuerpo {
+    padding-block: 2rem 3.5rem;
+  }
+
+  .pagina__mapa {
+    max-width: 32rem;
+    margin-block: 1rem 1.5rem;
+  }
+</style>

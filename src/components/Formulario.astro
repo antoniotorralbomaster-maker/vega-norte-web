@@ -1,0 +1,359 @@
+---
+// Formulario genérico (bloques 17, 18 y 24). Se construye entero desde
+// datos/formularios.json: campos, consentimientos y variable del webhook.
+//
+// - Valida en el navegador: obligatorios, correo, teléfono, rango del año,
+//   consentimiento y campo trampa vacío.
+// - Envía un POST con JSON a la URL de `webhook_env`:
+//   { formulario, fecha_envio, origen_pagina, datos: {...}, consentimientos: {...} }
+// - Sin URL configurada: modo demostración, no envía nada.
+// - Sin JavaScript: el botón queda desactivado y se ofrece el correo del club.
+import { formulario, webhookDe, respuestas, type Campo } from '../lib/formularios';
+import { club } from '../lib/datos';
+import { url } from '../lib/url';
+
+interface Props {
+  id: string;
+  /** Texto de ayuda junto al consentimiento (viene del .md de la página) */
+  ayuda?: string;
+}
+
+const { id, ayuda } = Astro.props;
+const f = formulario(id);
+const webhook = webhookDe(f);
+const demo = !webhook;
+const pref = `f-${id}`;
+const campos = f.campos as Campo[];
+
+// Ayudas de los campos que piden datos de un menor (reglas de menores).
+const AYUDA_CAMPO: Record<string, string> = {
+  jugador_nombre: 'Solo el nombre, sin apellidos.',
+};
+
+const ENLACE_PRIVACIDAD = 'política de privacidad';
+const partesConsentimiento = (texto: string) => {
+  const i = texto.indexOf(ENLACE_PRIVACIDAD);
+  return i === -1 ? [texto, '', ''] : [texto.slice(0, i), ENLACE_PRIVACIDAD, texto.slice(i + ENLACE_PRIVACIDAD.length)];
+};
+---
+
+<form
+  class="formulario"
+  id={pref}
+  method="post"
+  novalidate
+  aria-label={f.titulo}
+  data-formulario={id}
+  data-webhook={webhook}
+  data-respuesta-ok={respuestas.ok}
+  data-respuesta-error={respuestas.error}
+>
+  {
+    demo && (
+      <p class="formulario__demo texto-pequeno" data-demo>
+        Modo demostración: este formulario comprueba los datos, pero no envía nada.
+      </p>
+    )
+  }
+
+  <div class="formulario__resumen" tabindex="-1" hidden>
+    <p class="formulario__resumen-titulo">Revisa estos campos:</p>
+    <ul></ul>
+  </div>
+
+  <p class="formulario__nota texto-pequeno">Los campos marcados con <span aria-hidden="true">*</span><span class="solo-lectores">asterisco</span> son obligatorios.</p>
+
+  {
+    campos.map((c) => {
+      const idCampo = `${pref}-${c.nombre}`;
+      const ayudaCampo = AYUDA_CAMPO[c.nombre];
+      const describe = [ayudaCampo && `${idCampo}-ayuda`, `${idCampo}-error`].filter(Boolean).join(' ');
+      const comunes = {
+        id: idCampo,
+        name: c.nombre,
+        required: c.obligatorio,
+        'aria-describedby': describe,
+        'data-etiqueta': c.etiqueta,
+      };
+      return (
+        <div class="campo" data-campo={c.nombre}>
+          <label class="campo__etiqueta" for={idCampo}>
+            {c.etiqueta}
+            {c.obligatorio && <span class="campo__obligatorio" aria-hidden="true"> *</span>}
+          </label>
+          {ayudaCampo && (
+            <p class="campo__ayuda texto-pequeno" id={`${idCampo}-ayuda`}>
+              {ayudaCampo}
+            </p>
+          )}
+          {c.tipo === 'textarea' ? (
+            <textarea {...comunes} rows="5" maxlength="2000" />
+          ) : c.tipo === 'seleccion' ? (
+            <select {...comunes}>
+              <option value="">Elige una opción</option>
+              {(c.opciones ?? []).map((o) => (
+                <option value={o}>{o}</option>
+              ))}
+            </select>
+          ) : c.tipo === 'numero' ? (
+            <input {...comunes} type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" data-min={c.min} data-max={c.max} />
+          ) : c.tipo === 'email' ? (
+            <input {...comunes} type="email" autocomplete="email" maxlength="120" />
+          ) : c.tipo === 'tel' ? (
+            <input {...comunes} type="tel" autocomplete="tel" maxlength="20" />
+          ) : (
+            <input
+              {...comunes}
+              type="text"
+              maxlength="100"
+              autocomplete={c.nombre.startsWith('jugador_') ? 'off' : c.nombre.includes('nombre') ? 'name' : 'off'}
+            />
+          )}
+          <p class="campo__error" id={`${idCampo}-error`} hidden />
+        </div>
+      );
+    })
+  }
+
+  {/* Campo trampa: invisible para las personas; si llega relleno, es un robot */}
+  <div class="formulario__trampa" aria-hidden="true">
+    <label for={`${pref}-honeypot`}>No rellenes este campo</label>
+    <input id={`${pref}-honeypot`} name="honeypot" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  {ayuda && <p class="formulario__ayuda">{ayuda}</p>}
+
+  {
+    f.consentimientos.map((c) => {
+      const idCampo = `${pref}-${c.nombre}`;
+      const [antes, enlace, despues] = partesConsentimiento(c.texto);
+      return (
+        <div class="campo campo--casilla" data-campo={c.nombre}>
+          <input
+            id={idCampo}
+            name={c.nombre}
+            type="checkbox"
+            required={c.obligatorio}
+            data-consentimiento
+            data-etiqueta="Consentimiento"
+            aria-describedby={`${idCampo}-error`}
+          />
+          <label for={idCampo}>
+            {antes}
+            {enlace && (
+              <a href={url('/legal/privacidad')} target="_blank" rel="noopener">
+                {enlace}
+                <span class="solo-lectores"> (se abre en una pestaña nueva)</span>
+              </a>
+            )}
+            {despues}
+            {c.obligatorio && <span class="campo__obligatorio" aria-hidden="true"> *</span>}
+          </label>
+          <p class="campo__error" id={`${idCampo}-error`} hidden />
+        </div>
+      );
+    })
+  }
+
+  <noscript>
+    <p class="formulario__aviso">
+      Para enviar este formulario necesitas activar JavaScript. También puedes escribirnos a{' '}
+      <a href={`mailto:${club.contacto.emails.general}`}>{club.contacto.emails.general}</a>.
+    </p>
+  </noscript>
+
+  <p class="formulario__acciones">
+    <button class="boton" type="submit" disabled>Enviar</button>
+  </p>
+
+  <div class="formulario__respuesta" role="status" aria-live="polite" tabindex="-1"></div>
+
+  {
+    demo && (
+      <details class="formulario__carga" hidden>
+        <summary>Ver los datos que se enviarían</summary>
+        <pre />
+      </details>
+    )
+  }
+</form>
+
+<script>
+  import { iniciarFormularios } from '../scripts/formulario';
+  iniciarFormularios();
+</script>
+
+<style>
+  .formulario {
+    max-width: 40rem;
+    margin-block: 1rem 2rem;
+  }
+
+  .formulario__demo {
+    margin: 0 0 1.25rem;
+    padding: 0.5rem 0.75rem;
+    border-left: 4px solid var(--vn-gris);
+    background: var(--vn-arena);
+    color: var(--vn-carbon);
+  }
+
+  .formulario__nota {
+    color: var(--vn-gris);
+    margin-bottom: 1.25rem;
+  }
+
+  .formulario__resumen {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--vn-rojo);
+    border-radius: 4px;
+  }
+
+  .formulario__resumen-titulo {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+  }
+
+  .formulario__resumen ul {
+    margin: 0;
+  }
+
+  .campo {
+    margin-bottom: 1.25rem;
+  }
+
+  .campo__etiqueta {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.375rem;
+  }
+
+  .campo__obligatorio {
+    color: var(--vn-rojo);
+  }
+
+  .campo__ayuda {
+    margin: -0.125rem 0 0.375rem;
+    color: var(--vn-gris);
+  }
+
+  .campo input:not([type='checkbox']),
+  .campo select,
+  .campo textarea {
+    display: block;
+    width: 100%;
+    font: var(--vn-texto);
+    color: var(--vn-carbon);
+    background: var(--vn-blanco);
+    padding: 0.5rem 0.75rem;
+    border: 2px solid var(--vn-gris);
+    border-radius: 4px;
+  }
+
+  .campo input[inputmode='numeric'] {
+    max-width: 10rem;
+  }
+
+  .campo textarea {
+    resize: vertical;
+  }
+
+  .campo :is(input, select, textarea):focus-visible {
+    outline: 3px solid var(--vn-carbon);
+    outline-offset: 1px;
+    border-color: var(--vn-carbon);
+  }
+
+  .campo :is(input, select, textarea)[aria-invalid='true'] {
+    border-color: var(--vn-rojo);
+  }
+
+  .campo__error {
+    margin: 0.375rem 0 0;
+    color: var(--vn-rojo);
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .campo--casilla {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 0.75rem;
+    align-items: start;
+  }
+
+  .campo--casilla input {
+    width: 22px;
+    height: 22px;
+    margin: 3px 0 0;
+    accent-color: var(--vn-granate);
+  }
+
+  .campo--casilla .campo__error {
+    grid-column: 2;
+  }
+
+  .formulario__ayuda {
+    padding: 0.75rem 1rem;
+    background: var(--vn-arena);
+    border-radius: 4px;
+  }
+
+  .formulario__trampa {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .formulario__aviso {
+    font-weight: 600;
+  }
+
+  .formulario__acciones {
+    margin: 1.5rem 0 1rem;
+  }
+
+  .boton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .formulario__respuesta:empty {
+    display: none;
+  }
+
+  .formulario__respuesta {
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    border-left: 6px solid var(--vn-granate);
+    background: var(--vn-arena);
+    font-weight: 600;
+  }
+
+  .formulario__respuesta[data-estado='error'] {
+    border-left-color: var(--vn-rojo);
+  }
+
+  .formulario__carga {
+    margin-top: 1rem;
+  }
+
+  .formulario__carga summary {
+    cursor: pointer;
+    color: var(--vn-granate);
+    font-weight: 600;
+  }
+
+  .formulario__carga pre {
+    overflow-x: auto;
+    padding: 1rem;
+    background: var(--vn-arena);
+    border-radius: 4px;
+    font: var(--vn-texto-pequeno);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+</style>

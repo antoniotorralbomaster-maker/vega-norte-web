@@ -1,0 +1,42 @@
+---
+// Imagen de una noticia: la propia si existe en src/assets/noticias/ y, si no,
+// la ilustración del club según el tipo de noticia.
+import { Image } from 'astro:assets';
+import Ilustracion from './Ilustracion.astro';
+import { imagenDe, TIPOS, type Noticia } from '../lib/noticias';
+
+interface Props {
+  noticia: Noticia;
+  /** En las tarjetas la imagen es decorativa: el titular ya enlaza y describe */
+  decorativa?: boolean;
+  ancho?: number;
+}
+
+const { noticia, decorativa = false, ancho = 960 } = Astro.props;
+const imagen = imagenDe(noticia);
+---
+
+{
+  imagen ? (
+    <Image
+      class="imagen-noticia foto"
+      src={imagen}
+      alt={decorativa ? '' : noticia.data.imagen.alt}
+      width={ancho}
+      widths={[ancho / 2, ancho]}
+      sizes={`(max-width: ${ancho}px) 100vw, ${ancho}px`}
+    />
+  ) : (
+    <Ilustracion motivo={TIPOS[noticia.data.tipo].motivo} />
+  )
+}
+
+<style>
+  .imagen-noticia {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 5 / 3;
+    object-fit: cover;
+  }
+</style>

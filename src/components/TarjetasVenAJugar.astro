@@ -1,0 +1,83 @@
+---
+// Dos entradas «Ven a jugar» (bloque 2): familias (fondo arena) y jugadores (fondo rojo).
+// Los textos llegan desde contenido/paginas/inicio.md.
+import { url } from '../lib/url';
+
+export interface TarjetaVenAJugar {
+  publico: 'familias' | 'jugadores';
+  titular: string;
+  texto: string;
+  boton: { texto: string; ruta: string };
+}
+
+interface Props {
+  tarjetas: TarjetaVenAJugar[];
+}
+
+const { tarjetas } = Astro.props;
+---
+
+<ul class="vaj">
+  {
+    tarjetas.map((t) => (
+      <li class:list={['vaj__tarjeta', t.publico === 'jugadores' ? 'sobre-rojo' : 'sobre-arena']}>
+        <h3 class="vaj__titular">{t.titular}</h3>
+        <p class="vaj__texto">{t.texto}</p>
+        <p class="vaj__accion">
+          <a class:list={['boton', { 'boton--secundario': t.publico === 'familias' }]} href={url(t.boton.ruta)}>
+            {t.boton.texto}
+          </a>
+        </p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .vaj {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 800px) {
+    .vaj {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .vaj__tarjeta {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    border-radius: var(--vn-radio-foto);
+  }
+
+  .vaj__tarjeta.sobre-arena {
+    border-top: 6px solid var(--vn-rojo);
+  }
+
+  .vaj__tarjeta.sobre-rojo {
+    border-top: 6px solid var(--vn-granate);
+  }
+
+  .vaj__titular {
+    font: var(--vn-h2);
+    letter-spacing: 0.01em;
+  }
+
+  .vaj__texto {
+    flex: 1;
+  }
+
+  .vaj__accion {
+    margin: 0.5rem 0 0;
+  }
+
+  .sobre-arena .boton--secundario {
+    background: var(--vn-blanco);
+  }
+</style>
