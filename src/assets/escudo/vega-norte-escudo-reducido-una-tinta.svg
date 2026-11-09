@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 334" width="300" height="334" role="img" aria-labelledby="t-r-una-tinta">
+  <title id="t-r-una-tinta">AD Vega Norte</title>
+  <defs>
+    <clipPath id="forma-r-una-tinta"><path d="M28,0 H272 Q300,0 300,28 V156 C300,246 230,305 150,334 C70,305 0,246 0,156 V28 Q0,0 28,0 Z"/></clipPath>
+    <clipPath id="izq-r-una-tinta"><rect x="0" y="0" width="150" height="334"/></clipPath>
+    <clipPath id="der-r-una-tinta"><rect x="150" y="0" width="150" height="334"/></clipPath>
+  </defs>
+  <g clip-path="url(#forma-r-una-tinta)">
+    <rect x="0" y="0" width="150" height="334" fill="#1A1A1A"/>
+    <rect x="150" y="0" width="150" height="334" fill="#FFFFFF"/>
+    <g clip-path="url(#izq-r-una-tinta)">
+    <rect x="142.0" y="128" width="16" height="36" fill="#FFFFFF"/>
+    <path d="M150,130 C126.0,140 58.80000000000001,122 54,40 C116.4,36 146,80.5 150,130 Z" fill="#FFFFFF"/>
+    <path d="M150,130 C174.0,140 241.2,122 246,40 C183.6,36 154,80.5 150,130 Z" fill="#FFFFFF"/>
+    <circle cx="150" cy="222" r="64" fill="none" stroke="#FFFFFF" stroke-width="11"/>
+    <path d="M150.0,195.1 L175.6,213.7 L165.8,243.7 L134.2,243.7 L124.4,213.7 Z" fill="#FFFFFF"/>
+    </g>
+    <g clip-path="url(#der-r-una-tinta)">
+    <rect x="142.0" y="128" width="16" height="36" fill="#1A1A1A"/>
+    <path d="M150,130 C126.0,140 58.80000000000001,122 54,40 C116.4,36 146,80.5 150,130 Z" fill="#1A1A1A"/>
+    <path d="M150,130 C174.0,140 241.2,122 246,40 C183.6,36 154,80.5 150,130 Z" fill="#1A1A1A"/>
+    <circle cx="150" cy="222" r="64" fill="none" stroke="#1A1A1A" stroke-width="11"/>
+    <path d="M150.0,195.1 L175.6,213.7 L165.8,243.7 L134.2,243.7 L124.4,213.7 Z" fill="#1A1A1A"/>
+    </g>
+    
+    
+    <path d="M28,0 H272 Q300,0 300,28 V156 C300,246 230,305 150,334 C70,305 0,246 0,156 V28 Q0,0 28,0 Z" fill="none" stroke="#1A1A1A" stroke-width="36"/>
+  </g>
+</svg>
