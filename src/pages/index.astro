@@ -82,7 +82,7 @@ const hazte = enlaces(b6.cuerpo)[0];
       </div>
       <div class="portada__ilustracion">
         <div class="portada__escudo">
-          <Escudo alto={300} />
+          <Escudo tono="blanco" alto={320} />
         </div>
       </div>
     </div>
@@ -165,13 +165,10 @@ const hazte = enlaces(b6.cuerpo)[0];
     display: none;
   }
 
-  /* Escudo completo, versión principal, sobre tarjeta arena (esquinas de 16 px) */
+  /* Escudo completo, versión «sobre fondo rojo» (borde blanco), directamente sobre el rojo del club */
   .portada__escudo {
     display: flex;
     justify-content: center;
-    padding: 2.5rem;
-    background: var(--vn-arena);
-    border-radius: var(--vn-radio-foto);
   }
 
   @media (min-width: 900px) {
