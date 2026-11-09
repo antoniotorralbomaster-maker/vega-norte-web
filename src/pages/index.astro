@@ -3,7 +3,7 @@
 // y las cifras de datos/club.json.
 import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import Ilustracion from '../components/Ilustracion.astro';
+import Escudo from '../components/Escudo.astro';
 import TarjetasVenAJugar, { type TarjetaVenAJugar } from '../components/TarjetasVenAJugar.astro';
 import CifrasClub from '../components/CifrasClub.astro';
 import TarjetaNoticia from '../components/TarjetaNoticia.astro';
@@ -81,7 +81,9 @@ const hazte = enlaces(b6.cuerpo)[0];
         </p>
       </div>
       <div class="portada__ilustracion">
-        <Ilustracion motivo="campo" />
+        <div class="portada__escudo">
+          <Escudo alto={300} />
+        </div>
       </div>
     </div>
   </section>
@@ -161,6 +163,15 @@ const hazte = enlaces(b6.cuerpo)[0];
 
   .portada__ilustracion {
     display: none;
+  }
+
+  /* Escudo completo, versión principal, sobre tarjeta arena (esquinas de 16 px) */
+  .portada__escudo {
+    display: flex;
+    justify-content: center;
+    padding: 2.5rem;
+    background: var(--vn-arena);
+    border-radius: var(--vn-radio-foto);
   }
 
   @media (min-width: 900px) {
