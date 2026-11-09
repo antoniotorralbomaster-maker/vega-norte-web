@@ -15,6 +15,7 @@ import ResumenCampus from '../components/ResumenCampus.astro';
 import TarjetaAviso from '../components/TarjetaAviso.astro';
 import BotonDocumento from '../components/BotonDocumento.astro';
 import Ilustracion from '../components/Ilustracion.astro';
+import Escudo from '../components/Escudo.astro';
 import Formulario from '../components/Formulario.astro';
 import { interpretar } from '../lib/contenido';
 
@@ -36,14 +37,19 @@ if (PROPIAS.has(pagina.data.slug)) throw new Error('Ruta reservada');
 const fichero = `contenido/paginas/${pagina.id}.md`;
 const { titular, entradilla, trozos } = interpretar(pagina.body ?? '', fichero);
 const { seccion } = pagina.data;
+// El escudo completo luce en la presentación del club.
+const conEscudo = pagina.data.slug === '/club/quienes-somos';
 ---
 
 <Base titulo={pagina.data.titulo} descripcion={pagina.data.descripcion}>
   <header class="pagina__cabecera sobre-arena">
-    <div class="contenedor">
+    <div class:list={['contenedor', { 'pagina__cabecera-interior': conEscudo }]}>
+      <div>
       {seccion !== pagina.data.titulo && <p class="pagina__seccion texto-pequeno">{seccion}</p>}
       <h1>{titular}</h1>
       {entradilla && <div class="pagina__entradilla" set:html={entradilla} />}
+      </div>
+      {conEscudo && <Escudo alto={220} />}
     </div>
   </header>
 
@@ -90,6 +96,19 @@ const { seccion } = pagina.data;
   .pagina__cabecera {
     padding-block: 2.5rem 2rem;
     border-bottom: 4px solid var(--vn-rojo);
+  }
+
+  .pagina__cabecera-interior {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 720px) {
+    .pagina__cabecera-interior {
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+    }
   }
 
   .pagina__cabecera h1 {
