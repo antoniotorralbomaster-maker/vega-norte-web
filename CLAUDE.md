@@ -30,8 +30,9 @@ Esta primera fase es **solo la parte estática**: páginas de contenido, diseño
 | `/club/valores` | `club/valores.md` | 8 |
 | `/club/proteccion-de-menores` | `club/proteccion-de-menores.md` | 9 |
 | `/equipos` | `equipos/categorias.md` | 11 |
-| `/ven-a-jugar/familias` | `ven-a-jugar/familias.md` | 13, 17 |
-| `/ven-a-jugar/jugadores` | `ven-a-jugar/jugadores.md` | 14, 17 |
+| `/ven-a-jugar/familias` | `ven-a-jugar/familias.md` | 13 |
+| `/ven-a-jugar/jugadores` | `ven-a-jugar/jugadores.md` | 14 |
+| `/ven-a-jugar/pide-informacion` | `ven-a-jugar/pide-informacion.md` | 17 |
 | `/ven-a-jugar/cuotas` | `ven-a-jugar/cuotas.md` | 15 |
 | `/ven-a-jugar/preguntas-frecuentes` | `ven-a-jugar/preguntas-frecuentes.md` | 16 |
 | `/cuerpo-tecnico/unete` | `cuerpo-tecnico/unete.md` | 18 |

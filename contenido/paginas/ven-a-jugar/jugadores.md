@@ -8,12 +8,11 @@ publico: Jugadores de 12 a 18 años y sus familias
 tono: "Directo y sin rodeos: competición, nivel y equipo. Habla al jugador."
 descripcion: "Plazas por categoría, nivel de cada equipo y fechas de prueba para jugadores de 12 a 18 años en AD Vega Norte."
 datos: [categorias, pruebas, plazas_ejemplo]
-formulario: jugadores
 ---
 
 # Tu nivel, tu equipo
 
-Tienes entre 13 y 18 años y quieres competir. En Vega Norte tenemos equipos de distintos niveles en Infantil, Cadete y Juvenil, y un sitio para cada jugador.
+Tienes entre 12 y 18 años y quieres competir. En Vega Norte tenemos equipos de distintos niveles en Infantil, Cadete y Juvenil, y un sitio para cada jugador.
 
 ## Qué te ofrecemos
 
@@ -39,4 +38,6 @@ Hacer la prueba no asegura plaza. Contactamos con todos los jugadores, hayan sid
 
 ## Quiero hacer una prueba
 
-Formulario `jugadores` (ver `datos/formularios.json`). Aunque seas tú quien lo rellena, el formulario pide el nombre y el correo de tu padre, madre o tutor, porque en el club los menores participan con autorización de la familia.
+Si tienes 14 años o más, puedes pedir la prueba tú mismo. Si tienes menos de 14, tu padre, madre o tutor debe hacerlo por ti. En los dos casos te pedimos el contacto de tu familia, porque en el club los menores participan con su autorización.
+
+**[Pide información o una prueba](/ven-a-jugar/pide-informacion)**

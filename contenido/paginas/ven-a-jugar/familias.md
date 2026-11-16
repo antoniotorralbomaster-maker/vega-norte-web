@@ -8,17 +8,16 @@ publico: Padres, madres y tutores
 tono: "Confianza, cercanía y buen trato. Habla a los padres."
 descripcion: "Cómo trabajamos con los niños de 6 a 11 años y cómo pedir información o una prueba en AD Vega Norte."
 datos: [categorias, cuotas, pruebas, plazas_ejemplo]
-formulario: familias
 ---
 
 # Tu hijo o hija, con nosotros
 
-Si tu hijo o hija tiene entre 5 y 12 años y quiere jugar al fútbol, estamos aquí para que dé sus primeros pasos o cambie de club con confianza.
+Si tu hijo o hija tiene entre 6 y 11 años y quiere jugar al fútbol, estamos aquí para que dé sus primeros pasos o cambie de club con confianza.
 
 ## Cómo trabajamos
 
 - **Se empieza a los 6 años.** En prebenjamín introducimos el juego en grupos pequeños, con entrenadores formados para trabajar con los más pequeños.
-- **Todos juegan.** Entre los 6 y los 12 años priorizamos aprender y disfrutar. Los resultados importan, pero no más que el crecimiento de cada niño.
+- **Todos juegan.** Entre los 6 y los 11 años priorizamos aprender y disfrutar. Los resultados importan, pero no más que el crecimiento de cada niño.
 - **Entrenadores con titulación.** Todo el cuerpo técnico se forma y se revisa cada temporada.
 - **Contamos contigo.** Hablamos con las familias a lo largo del año y te explicamos cómo evoluciona tu hijo o hija.
 
@@ -41,4 +40,6 @@ Matrícula de 180 € más dos o tres mensualidades de 110 € a 125 € según 
 
 ## Quiero información o una prueba
 
-Formulario `familias` (ver `datos/formularios.json`). Texto de ayuda sobre el consentimiento: «Para tratar los datos de tu hijo o hija necesitamos que seas su padre, madre o tutor legal. Solo te pedimos su nombre de pila y su año de nacimiento.»
+Cuéntanos quién eres y qué buscas y te respondemos en un máximo de 5 días laborables. Solo te pedimos tus datos de contacto y el nombre de pila de tu hijo o hija.
+
+**[Pide información o una prueba](/ven-a-jugar/pide-informacion)**

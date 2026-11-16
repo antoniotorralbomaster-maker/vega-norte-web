@@ -48,6 +48,7 @@ const RUTAS = [
   '/equipos',
   '/ven-a-jugar/familias',
   '/ven-a-jugar/jugadores',
+  '/ven-a-jugar/pide-informacion',
   '/ven-a-jugar/cuotas',
   '/ven-a-jugar/preguntas-frecuentes',
   '/cuerpo-tecnico/unete',
@@ -177,9 +178,9 @@ async function revisarFormularios(navegador) {
   const p = await navegador.newPage();
   const envios = [];
   p.on('request', (r) => r.method() === 'POST' && envios.push(r.url()));
-  for (const ruta of ['/ven-a-jugar/familias', '/ven-a-jugar/jugadores', '/cuerpo-tecnico/unete', '/contacto']) {
+  for (const [ruta, id] of [['/ven-a-jugar/pide-informacion', 'familias'], ['/ven-a-jugar/pide-informacion', 'jugadores'], ['/cuerpo-tecnico/unete', null], ['/contacto', null]]) {
     await p.goto(ORIGEN + ruta, { waitUntil: 'networkidle' });
-    const form = p.locator('form.formulario');
+    const form = p.locator(id ? `form.formulario[data-formulario="${id}"]` : 'form.formulario');
     if (await form.getAttribute('data-webhook')) {
       error('formularios', `${ruta}: la construcción tiene un webhook configurado; construye sin .env para probar el modo demostración`);
       continue;
