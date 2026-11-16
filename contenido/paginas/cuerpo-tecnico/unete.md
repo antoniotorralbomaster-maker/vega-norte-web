@@ -16,7 +16,7 @@ Buscamos entrenadores y colaboradores que quieran formar futbolistas y personas.
 
 ## Qué te ofrecemos
 
-- **Un proyecto serio.** Un club con 45 equipos, metodología por etapas y coordinación de fútbol 7 y de fútbol 11.
+- **Un proyecto serio.** Un club con 38 equipos, metodología por etapas y coordinación de fútbol 7 y de fútbol 11.
 - **Formación continua.** Reuniones técnicas y apoyo para sacarte la titulación.
 - **Acompañamiento.** Un coordinador que te ayuda a lo largo de toda la temporada.
 - **Instalaciones.** Tres campos de fútbol 11, dos de fútbol 7, vestuarios y sala de reuniones.

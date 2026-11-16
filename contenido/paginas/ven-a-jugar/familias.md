@@ -1,12 +1,12 @@
 ---
-titulo: "Familias de 5 a 12 años"
+titulo: "Familias de 6 a 11 años"
 slug: /ven-a-jugar/familias
 seccion: Ven a jugar
 bloques: [13, 17]
 fase: MVP
 publico: Padres, madres y tutores
 tono: "Confianza, cercanía y buen trato. Habla a los padres."
-descripcion: "Cómo trabajamos con los niños de 5 a 12 años y cómo pedir información o una prueba en AD Vega Norte."
+descripcion: "Cómo trabajamos con los niños de 6 a 11 años y cómo pedir información o una prueba en AD Vega Norte."
 datos: [categorias, cuotas, pruebas, plazas_ejemplo]
 formulario: familias
 ---
@@ -17,14 +17,14 @@ Si tu hijo o hija tiene entre 5 y 12 años y quiere jugar al fútbol, estamos aq
 
 ## Cómo trabajamos
 
-- **Se empieza a los 5 años.** Nuestro grupo Primeros pasos introduce el juego en pequeños grupos, con entrenadores formados para trabajar con los más pequeños.
+- **Se empieza a los 6 años.** En prebenjamín introducimos el juego en grupos pequeños, con entrenadores formados para trabajar con los más pequeños.
 - **Todos juegan.** Entre los 6 y los 12 años priorizamos aprender y disfrutar. Los resultados importan, pero no más que el crecimiento de cada niño.
 - **Entrenadores con titulación.** Todo el cuerpo técnico se forma y se revisa cada temporada.
 - **Contamos contigo.** Hablamos con las familias a lo largo del año y te explicamos cómo evoluciona tu hijo o hija.
 
 ## Plazas disponibles
 
-Tabla de `plazas_ejemplo` solo para las categorías de 5 a 12 años (Primeros pasos, Prebenjamín, Benjamín, Alevín): categoría, años de nacimiento, plazas y porteros. Pie: «Datos actualizados el [fecha]. Si no ves tu categoría, escríbenos igualmente: las plazas cambian durante la temporada.»
+Tabla de `plazas_ejemplo` solo para las categorías de Prebenjamín, Benjamín y Alevín: categoría, años de nacimiento, plazas y porteros. Pie: «Datos actualizados el [fecha]. Si no ves tu categoría, escríbenos igualmente: las plazas cambian durante la temporada.»
 
 ## Cómo es la prueba
 
@@ -37,7 +37,7 @@ Hacer la prueba no asegura plaza. Contactamos con todas las familias, hayan sido
 
 ## Cuánto cuesta
 
-Entre 250 € y 400 € al año según la categoría, más el pack de equipación de 190 €. Ver todos los detalles en la [página de cuotas](/ven-a-jugar/cuotas).
+Matrícula de 180 € más dos o tres mensualidades de 110 € a 125 € según el equipo, más el pack de equipación de 190 €. Ver todos los detalles en la [página de cuotas](/ven-a-jugar/cuotas).
 
 ## Quiero información o una prueba
 

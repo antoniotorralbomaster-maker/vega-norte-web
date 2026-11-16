@@ -57,7 +57,7 @@ const INDICACIONES: {
     crear: (b) => ({
       trozo: {
         componente: 'tabla-plazas',
-        publico: /Infantil|13 a 18/.test(b.split(':')[0]) ? 'jugadores' : 'familias',
+        publico: /Infantil|12 a 18/.test(b.split(':')[0]) ? 'jugadores' : 'familias',
         pie: citaDe(b, 'Pie'),
       },
     }),
