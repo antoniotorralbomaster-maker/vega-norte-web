@@ -1,8 +1,10 @@
 ---
 // Franja inferior en rojo: lema y hasta 3 logos de patrocinadores (Manual de identidad).
-// Lee de datos/club.json. Mientras no haya logos, cada patrocinador se muestra
-// como un marcador con su nombre (sustituir por <img> cuando existan los ficheros).
+// Lee de datos/club.json. Usa el logo en blanco de src/assets/patrocinadores; si falta,
+// muestra el nombre del patrocinador como marcador.
+import { Image } from 'astro:assets';
 import { club, patrocinadoresFranja } from '../lib/datos';
+import { imagenPatrocinador } from '../lib/patrocinadores';
 
 const patrocinadores = patrocinadoresFranja(3);
 ---
@@ -13,8 +15,12 @@ const patrocinadores = patrocinadoresFranja(3);
     <ul class="franja__logos" aria-label="Patrocinadores">
       {
         patrocinadores.map((p) => (
-          <li class="franja__logo" data-nivel={p.nivel}>
-            <span class="franja__nombre">{p.nombre}</span>
+          <li class:list={['franja__logo', { 'franja__logo--imagen': imagenPatrocinador(p.nombre, 'logo-blanco') }]} data-nivel={p.nivel}>
+            {imagenPatrocinador(p.nombre, 'logo-blanco') ? (
+              <Image src={imagenPatrocinador(p.nombre, 'logo-blanco')!} alt={p.nombre} height={96} class="franja__img" />
+            ) : (
+              <span class="franja__nombre">{p.nombre}</span>
+            )}
             <span class="solo-lectores">, patrocinador {p.nivel.toLowerCase()}</span>
           </li>
         ))
@@ -58,6 +64,18 @@ const patrocinadores = patrocinadoresFranja(3);
     border: 2px solid var(--vn-blanco);
     border-radius: 4px;
     text-align: center;
+  }
+
+  .franja__logo--imagen {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .franja__img {
+    display: block;
+    height: 48px;
+    width: auto;
   }
 
   .franja__nombre {

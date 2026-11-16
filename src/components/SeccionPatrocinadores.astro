@@ -1,7 +1,9 @@
 ---
 // Patrocinadores (bloque 6): todos los de datos/club.json, el principal primero.
-// Mientras no haya logos, se muestra el nombre como marcador.
+// Cada tarjeta muestra su logo y, si existe, la imagen del anuncio (src/assets/patrocinadores).
+import { Image } from 'astro:assets';
 import { patrocinadoresFranja, club } from '../lib/datos';
+import { imagenPatrocinador } from '../lib/patrocinadores';
 import { url } from '../lib/url';
 import type { Enlace } from '../lib/secciones';
 
@@ -17,8 +19,18 @@ const patrocinadores = patrocinadoresFranja(club.patrocinadores.length);
   {
     patrocinadores.map((p) => (
       <li class:list={['patro__item', { 'patro__item--principal': p.nivel === 'Principal' }]}>
-        <span class="patro__nivel texto-pequeno">{p.nivel}</span>
-        <span class="patro__nombre">{p.nombre}</span>
+        {imagenPatrocinador(p.nombre, 'imagen') && (
+          <Image src={imagenPatrocinador(p.nombre, 'imagen')!} alt="" width={800} class="patro__foto" />
+        )}
+        <span class="patro__cabecera">
+          {imagenPatrocinador(p.nombre, 'logo') && (
+            <Image src={imagenPatrocinador(p.nombre, 'logo')!} alt="" height={112} class="patro__logo" />
+          )}
+          <span class="patro__textos">
+            <span class="patro__nivel texto-pequeno">{p.nivel}</span>
+            <span class="patro__nombre">{p.nombre}</span>
+          </span>
+        </span>
         <span class="patro__desc texto-pequeno">{p.descripcion}</span>
       </li>
     ))
@@ -66,6 +78,32 @@ const patrocinadores = patrocinadoresFranja(club.patrocinadores.length);
 
   .patro__item--principal {
     border: 2px solid var(--vn-rojo);
+  }
+
+  .patro__foto {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-bottom: 0.75rem;
+  }
+
+  .patro__cabecera {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .patro__textos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .patro__logo {
+    height: 56px;
+    width: auto;
+    flex: none;
   }
 
   .patro__nivel {
