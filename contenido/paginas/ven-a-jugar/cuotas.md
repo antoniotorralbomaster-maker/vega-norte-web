@@ -4,7 +4,7 @@ slug: /ven-a-jugar/cuotas
 seccion: Ven a jugar
 bloques: [15]
 fase: MVP
-descripcion: "Cuotas por categoría de la temporada 2026/27 en AD Vega Norte: qué incluyen, cómo se pagan y descuentos por hermanos."
+descripcion: "Cuotas por categoría de la temporada 2026/27 en AD Vega Norte: qué incluyen, cómo se pagan y matrícula."
 datos: [categorias, cuotas, campus]
 ---
 
@@ -14,15 +14,21 @@ Publicamos las cuotas con todo el detalle para que sepas lo que pagas antes de d
 
 ## Cuota anual por categoría
 
-Tabla desde `categorias`: categoría, edad, cuota anual, inscripción y tres pagos.
+Tabla desde `categorias`: una fila por categoría y nivel de equipo, con matrícula, mensualidad, pagos y total.
 
-| Categoría | Cuota anual | Inscripción | 3 pagos de |
-|---|---|---|---|
-| Primeros pasos | 250 € | 100 € | 50 € |
-| Prebenjamín y Benjamín | 340 € | 100 € | 80 € |
-| Alevín | 370 € | 100 € | 90 € |
-| Infantil y Cadete | 400 € | 100 € | 100 € |
-| Juvenil | 430 € | 100 € | 110 € |
+| Categoría | Equipos | Matrícula | Mensualidad | Pagos | Total |
+|---|---|---|---|---|---|
+| Prebenjamín | Todos | 180 € | 110 € | 2 | 400 € |
+| Benjamín | A | 180 € | 125 € | 3 | 555 € |
+| Benjamín | B a G | 180 € | 110 € | 2 | 400 € |
+| Alevín | A a D | 180 € | 125 € | 3 | 555 € |
+| Alevín | E a G | 180 € | 110 € | 2 | 400 € |
+| Infantil | A a C | 180 € | 140 € | 3 | 600 € |
+| Infantil | D a G | 180 € | 125 € | 3 | 555 € |
+| Cadete | A a D | 180 € | 140 € | 3 | 600 € |
+| Cadete | E a G | 180 € | 125 € | 3 | 555 € |
+| Juvenil | A a C | 180 € | 140 € | 3 | 600 € |
+| Juvenil | D y E | 180 € | 125 € | 3 | 555 € |
 
 ## Qué incluye la cuota
 
@@ -39,16 +45,12 @@ Pack de 190 €: dos equipaciones de juego, chándal y mochila.
 
 ## Cómo se paga
 
-- Inscripción, antes del 30 de junio.
-- Primer pago, antes del 15 de octubre.
-- Segundo pago, antes del 15 de noviembre.
-- Tercer pago, antes del 15 de diciembre.
+- Matrícula, antes del 31 de mayo de 2027.
+- Primera mensualidad, antes del 15 de octubre.
+- Segunda mensualidad, antes del 15 de noviembre.
+- Tercera mensualidad (en los equipos con tres pagos), antes del 15 de diciembre.
 
 Se paga por transferencia o domiciliación, indicando siempre el nombre del jugador y el año de nacimiento.
-
-## Descuento por hermanos
-
-Un 10 % desde el segundo hermano. Por ejemplo, una familia con un hijo en Alevín (370 €) y otro en Infantil (400 € menos el 10 %, es decir, 360 €) paga 730 € de cuotas, más las equipaciones.
 
 ## Campus
 

@@ -1,8 +1,8 @@
 ---
 // Tabla de cuotas (bloque 15). Lee `categorias` y `cuotas` de datos/club.json.
-// Las categorías consecutivas con la misma cuota se agrupan en una fila.
+// Una fila por categoría y nivel de equipo: la mensualidad y los pagos dependen del equipo.
 import { club } from '../lib/datos';
-import { filasCuotas, unirNombres } from '../lib/categorias';
+import { filasCuotas } from '../lib/categorias';
 import { euros } from '../lib/formato';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const { nota } = Astro.props;
-const { inscripcion, numero_pagos, temporada } = club.cuotas;
+const { matricula, temporada } = club.cuotas;
 const filas = filasCuotas();
 ---
 
@@ -20,21 +20,23 @@ const filas = filasCuotas();
     <thead>
       <tr>
         <th scope="col">Categoría</th>
-        <th scope="col">Edad</th>
-        <th scope="col" class="num">Cuota anual</th>
-        <th scope="col" class="num">Inscripción</th>
-        <th scope="col" class="num">{numero_pagos} pagos de</th>
+        <th scope="col">Equipos</th>
+        <th scope="col" class="num">Matrícula</th>
+        <th scope="col" class="num">Mensualidad</th>
+        <th scope="col" class="num">Pagos</th>
+        <th scope="col" class="num">Total</th>
       </tr>
     </thead>
     <tbody>
       {
         filas.map((f) => (
           <tr>
-            <th scope="row">{unirNombres(f.categorias)}</th>
-            <td>{f.edad}</td>
-            <td class="num">{euros(f.cuota_anual)}</td>
-            <td class="num">{euros(inscripcion)}</td>
-            <td class="num">{euros(f.pagos)}</td>
+            <th scope="row">{f.categoria}</th>
+            <td>{f.equipos}</td>
+            <td class="num">{euros(matricula)}</td>
+            <td class="num">{euros(f.mensualidad)}</td>
+            <td class="num">{f.pagos}</td>
+            <td class="num">{euros(f.total)}</td>
           </tr>
         ))
       }

@@ -1,12 +1,12 @@
 ---
-titulo: "Jugadores de 13 a 18 años"
+titulo: "Jugadores de 12 a 18 años"
 slug: /ven-a-jugar/jugadores
 seccion: Ven a jugar
 bloques: [14, 17]
 fase: MVP
-publico: Jugadores de 13 a 18 años y sus familias
+publico: Jugadores de 12 a 18 años y sus familias
 tono: "Directo y sin rodeos: competición, nivel y equipo. Habla al jugador."
-descripcion: "Plazas por categoría, nivel de cada equipo y fechas de prueba para jugadores de 13 a 18 años en AD Vega Norte."
+descripcion: "Plazas por categoría, nivel de cada equipo y fechas de prueba para jugadores de 12 a 18 años en AD Vega Norte."
 datos: [categorias, pruebas, plazas_ejemplo]
 formulario: jugadores
 ---

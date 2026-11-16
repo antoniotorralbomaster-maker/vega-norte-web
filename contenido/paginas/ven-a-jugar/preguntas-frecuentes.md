@@ -10,7 +10,7 @@ datos: [preguntas_frecuentes]
 
 # Preguntas frecuentes
 
-Se genera en formato acordeón desde `preguntas_frecuentes` en `datos/club.json` (11 preguntas). Agrupar visualmente en tres bloques: **Empezar** (edad, prueba, hermanos), **Dinero** (cuota, qué incluye, plazos, ropa) y **Día a día** (entrenamientos, protección, partidos, ser entrenador).
+Se genera en formato acordeón desde `preguntas_frecuentes` en `datos/club.json` (10 preguntas). Agrupar visualmente en tres bloques: **Empezar** (edad, prueba), **Dinero** (cuota, qué incluye, plazos, ropa) y **Día a día** (entrenamientos, protección, partidos, ser entrenador).
 
 Al final, una tarjeta: «¿No encuentras tu duda? Escríbenos desde la [página de contacto](/contacto).»
 

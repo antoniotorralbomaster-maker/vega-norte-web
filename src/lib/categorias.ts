@@ -5,8 +5,8 @@ export type Categoria = (typeof club.categorias)[number];
 
 /**
  * Público de cada categoría, según los textos de contenido/paginas/ven-a-jugar:
- * familias.md (5 a 12 años): Primeros pasos, Prebenjamín, Benjamín y Alevín.
- * jugadores.md (13 a 18 años): Infantil, Cadete y Juvenil.
+ * familias.md: Prebenjamín, Benjamín y Alevín.
+ * jugadores.md: Infantil, Cadete y Juvenil.
  */
 const JUGADORES = new Set(['infantil', 'cadete', 'juvenil']);
 
@@ -27,30 +27,25 @@ export function nombresDe(publico: Publico): string[] {
 }
 
 export interface FilaCuota {
-  categorias: string[];
-  edad: string;
-  cuota_anual: number;
+  categoria: string;
+  equipos: string;
+  mensualidad: number;
   pagos: number;
+  total: number;
 }
 
-/** Agrupa categorías consecutivas con la misma cuota (p. ej. «Prebenjamín y Benjamín»). */
+/** Una fila por categoría y nivel de equipo (la cuota depende del equipo). Total = matrícula + mensualidades. */
 export function filasCuotas(): FilaCuota[] {
-  const filas: (FilaCuota & { edades: number[] })[] = [];
-  for (const c of club.categorias) {
-    const edades = (c.edad.match(/\d+/g) ?? []).map(Number);
-    const ultima = filas.at(-1);
-    if (ultima && ultima.cuota_anual === c.cuota_anual && ultima.pagos === c.pagos) {
-      ultima.categorias.push(c.nombre);
-      ultima.edades.push(...edades);
-    } else {
-      filas.push({ categorias: [c.nombre], edad: '', cuota_anual: c.cuota_anual, pagos: c.pagos, edades });
-    }
-  }
-  return filas.map(({ edades, ...f }) => {
-    const min = Math.min(...edades);
-    const max = Math.max(...edades);
-    return { ...f, edad: min === max ? `${min} años` : `${min}-${max} años` };
-  });
+  const { matricula } = club.cuotas;
+  return club.categorias.flatMap((c) =>
+    c.niveles.map((n) => ({
+      categoria: c.nombre,
+      equipos: n.equipos,
+      mensualidad: n.mensualidad,
+      pagos: n.pagos,
+      total: matricula + n.mensualidad * n.pagos,
+    })),
+  );
 }
 
 /** «Prebenjamín y Benjamín», «A, B y C» */

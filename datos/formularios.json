@@ -4,14 +4,14 @@
     {
       "id": "familias",
       "titulo": "Quiero información o una prueba para mi hijo o hija",
-      "publico": "Familias con hijos de 5 a 12 años",
+      "publico": "Familias con hijos de 6 a 11 años",
       "webhook_env": "PUBLIC_WEBHOOK_FAMILIAS",
       "campos": [
         { "nombre": "tutor_nombre", "etiqueta": "Nombre y apellidos del padre, madre o tutor", "tipo": "texto", "obligatorio": true },
         { "nombre": "email", "etiqueta": "Correo electrónico", "tipo": "email", "obligatorio": true },
         { "nombre": "telefono", "etiqueta": "Teléfono (opcional)", "tipo": "tel", "obligatorio": false },
         { "nombre": "jugador_nombre", "etiqueta": "Nombre de pila del niño o niña", "tipo": "texto", "obligatorio": true },
-        { "nombre": "jugador_nacimiento", "etiqueta": "Año de nacimiento", "tipo": "numero", "min": 2014, "max": 2021, "obligatorio": true },
+        { "nombre": "jugador_nacimiento", "etiqueta": "Año de nacimiento", "tipo": "numero", "min": 2015, "max": 2020, "obligatorio": true },
         { "nombre": "club_actual", "etiqueta": "Club actual (si juega en alguno)", "tipo": "texto", "obligatorio": false },
         { "nombre": "mensaje", "etiqueta": "¿Quieres contarnos algo más?", "tipo": "textarea", "obligatorio": false }
       ],
@@ -22,11 +22,11 @@
     {
       "id": "jugadores",
       "titulo": "Quiero hacer una prueba",
-      "publico": "Jugadores de 13 a 18 años y sus familias",
+      "publico": "Jugadores de 12 a 18 años y sus familias",
       "webhook_env": "PUBLIC_WEBHOOK_JUGADORES",
       "campos": [
         { "nombre": "jugador_nombre", "etiqueta": "Nombre de pila del jugador", "tipo": "texto", "obligatorio": true },
-        { "nombre": "jugador_nacimiento", "etiqueta": "Año de nacimiento", "tipo": "numero", "min": 2008, "max": 2013, "obligatorio": true },
+        { "nombre": "jugador_nacimiento", "etiqueta": "Año de nacimiento", "tipo": "numero", "min": 2008, "max": 2014, "obligatorio": true },
         { "nombre": "posicion", "etiqueta": "Posición", "tipo": "seleccion", "opciones": ["Portero", "Defensa", "Centrocampista", "Delantero"], "obligatorio": true },
         { "nombre": "club_actual", "etiqueta": "Club actual", "tipo": "texto", "obligatorio": false },
         { "nombre": "tutor_nombre", "etiqueta": "Nombre y apellidos del padre, madre o tutor", "tipo": "texto", "obligatorio": true },
@@ -49,7 +49,7 @@
         { "nombre": "telefono", "etiqueta": "Teléfono (opcional)", "tipo": "tel", "obligatorio": false },
         { "nombre": "titulacion", "etiqueta": "Titulación", "tipo": "seleccion", "opciones": ["Sin titulación todavía", "Monitor o nivel 1", "Nivel 2", "Nivel 3 o UEFA", "Otra"], "obligatorio": true },
         { "nombre": "experiencia", "etiqueta": "Experiencia y categorías que has entrenado", "tipo": "textarea", "obligatorio": false },
-        { "nombre": "categoria_interes", "etiqueta": "Categoría que te interesa", "tipo": "seleccion", "opciones": ["Primeros pasos", "Prebenjamín", "Benjamín", "Alevín", "Infantil", "Cadete", "Juvenil", "Porteros", "Me da igual"], "obligatorio": false }
+        { "nombre": "categoria_interes", "etiqueta": "Categoría que te interesa", "tipo": "seleccion", "opciones": ["Prebenjamín", "Benjamín", "Alevín", "Infantil", "Cadete", "Juvenil", "Porteros", "Me da igual"], "obligatorio": false }
       ],
       "consentimientos": [
         { "nombre": "acepta_privacidad", "texto": "He leído la política de privacidad y acepto el tratamiento de mis datos para valorar mi candidatura", "obligatorio": true }

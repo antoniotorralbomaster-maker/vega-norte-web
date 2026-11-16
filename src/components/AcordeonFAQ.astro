@@ -15,7 +15,7 @@ const { agrupar = true, nivel = 2 } = Astro.props;
 type Pregunta = (typeof club.preguntas_frecuentes)[number];
 
 const REGLAS: { titulo: string; patron: RegExp | null }[] = [
-  { titulo: 'Empezar', patron: /edad|prueba|hermanos/i },
+  { titulo: 'Empezar', patron: /edad|prueba/i },
   { titulo: 'Dinero', patron: /cuesta|cuota|plazos|pagar|ropa/i },
   { titulo: 'Día a día', patron: null },
 ];

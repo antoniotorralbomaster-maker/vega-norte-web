@@ -12,7 +12,7 @@ datos: [club, instalaciones, directiva]
 
 AD Vega Norte nace en 2008 del empeño de familias y técnicos del barrio por tener un club donde todos los chicos y chicas pudieran crecer jugando.
 
-Hoy somos una cantera grande y competitiva que mantiene esa idea de origen: cada equipo cuenta, del primero al último. Tenemos 45 equipos, de Primeros pasos a Juvenil, y unos 700 jugadores.
+Hoy somos una cantera grande y competitiva que mantiene esa idea de origen: cada equipo cuenta, del primero al último. Tenemos 38 equipos, de Prebenjamín a Juvenil, y unos 665 jugadores.
 
 ## Nuestro propósito
 
