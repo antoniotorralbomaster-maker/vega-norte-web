@@ -43,6 +43,7 @@ export const menuPrincipal: EntradaMenu[] = [
     hijos: [
       { ruta: '/ven-a-jugar/familias', fase: 1, bloque: 13 },
       { ruta: '/ven-a-jugar/jugadores', fase: 1, bloque: 14 },
+      { ruta: '/ven-a-jugar/pide-informacion', fase: 1, bloque: 17 },
       { ruta: '/ven-a-jugar/cuotas', fase: 1, bloque: 15 },
       { ruta: '/ven-a-jugar/preguntas-frecuentes', fase: 1, bloque: 16 },
       { ruta: '/ven-a-jugar/campus', etiqueta: 'Campus', fase: 2, bloque: 19 },
